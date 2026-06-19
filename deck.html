@@ -371,10 +371,80 @@ tr:nth-child(even) td { background: #f8fafc; }
     <div class="cover-tagline-pill">Build what next India runs on</div>
   </div>
 
-  <div class="cover-fields">
-    <div class="cover-field">Team Name : <span>redrob-ranker</span></div>
-    <div class="cover-field">Team Leader Name : <span>Drishti</span></div>
-    <div class="cover-field">Problem Statement : <span>Build an AI system that ranks 100,000 candidates for a Senior AI Engineer role the way a great recruiter would. No keyword shortcuts. Real skill depth, career history, and availability signals that actually matter.</span></div>
+  <div class="cover-fields" style="flex-direction:row; align-items:center; gap:32px; padding:20px 48px 28px;">
+    <div style="flex-shrink:0;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="130" height="130">
+        <defs>
+          <radialGradient id="bgGrad" cx="50%" cy="50%" r="70%">
+            <stop offset="0%" stop-color="#0D1628"/><stop offset="100%" stop-color="#050709"/>
+          </radialGradient>
+          <radialGradient id="nodeAura" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#22D3EE" stop-opacity="0.18"/>
+            <stop offset="60%" stop-color="#818CF8" stop-opacity="0.07"/>
+            <stop offset="100%" stop-color="#22D3EE" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="innerNode" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#0F2040"/><stop offset="100%" stop-color="#080E1C"/>
+          </radialGradient>
+          <filter id="cyanGlow2" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <filter id="ringGlow2" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="3.5" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <pattern id="dotGrid2" width="24" height="24" patternUnits="userSpaceOnUse">
+            <circle cx="12" cy="12" r="0.8" fill="#22D3EE" fill-opacity="0.12"/>
+          </pattern>
+          <linearGradient id="lineGC2" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#22D3EE" stop-opacity="0.5"/><stop offset="100%" stop-color="#22D3EE" stop-opacity="0"/>
+          </linearGradient>
+          <linearGradient id="lineGI2" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#818CF8" stop-opacity="0.4"/><stop offset="100%" stop-color="#818CF8" stop-opacity="0"/>
+          </linearGradient>
+          <linearGradient id="lineGC3" x1="100%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#22D3EE" stop-opacity="0.4"/><stop offset="100%" stop-color="#22D3EE" stop-opacity="0"/>
+          </linearGradient>
+          <linearGradient id="borderGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#22D3EE"/><stop offset="50%" stop-color="#818CF8"/><stop offset="100%" stop-color="#22D3EE"/>
+          </linearGradient>
+          <clipPath id="rc2"><rect width="400" height="400" rx="20" ry="20"/></clipPath>
+        </defs>
+        <rect width="400" height="400" rx="20" fill="url(#bgGrad)"/>
+        <rect width="400" height="400" rx="20" fill="url(#dotGrid2)" clip-path="url(#rc2)"/>
+        <line x1="200" y1="185" x2="88" y2="98" stroke="url(#lineGC2)" stroke-width="1.2" stroke-dasharray="5,4"/>
+        <circle cx="88" cy="98" r="4.5" fill="#07090F" stroke="#22D3EE" stroke-width="1.2" stroke-opacity="0.5"/>
+        <line x1="200" y1="185" x2="318" y2="95" stroke="url(#lineGI2)" stroke-width="1.2" stroke-dasharray="5,4"/>
+        <circle cx="318" cy="95" r="4.5" fill="#07090F" stroke="#818CF8" stroke-width="1.2" stroke-opacity="0.5"/>
+        <line x1="182" y1="200" x2="55" y2="185" stroke="url(#lineGC3)" stroke-width="1.2" stroke-dasharray="5,4"/>
+        <circle cx="55" cy="185" r="4.5" fill="#07090F" stroke="#22D3EE" stroke-width="1.2" stroke-opacity="0.5"/>
+        <line x1="218" y1="200" x2="345" y2="205" stroke="url(#lineGI2)" stroke-width="1.2" stroke-dasharray="5,4"/>
+        <circle cx="345" cy="205" r="4.5" fill="#07090F" stroke="#818CF8" stroke-width="1.2" stroke-opacity="0.5"/>
+        <line x1="190" y1="218" x2="95" y2="305" stroke="url(#lineGI2)" stroke-width="1.2" stroke-dasharray="5,4"/>
+        <circle cx="95" cy="305" r="4.5" fill="#07090F" stroke="#818CF8" stroke-width="1.2" stroke-opacity="0.5"/>
+        <line x1="210" y1="218" x2="315" y2="308" stroke="url(#lineGC3)" stroke-width="1.2" stroke-dasharray="5,4"/>
+        <circle cx="315" cy="308" r="4.5" fill="#07090F" stroke="#22D3EE" stroke-width="1.2" stroke-opacity="0.5"/>
+        <circle cx="200" cy="200" r="100" fill="url(#nodeAura)"/>
+        <circle cx="200" cy="200" r="72" fill="none" stroke="url(#borderGrad2)" stroke-width="1.5" stroke-opacity="0.35" filter="url(#ringGlow2)"/>
+        <circle cx="200" cy="200" r="60" fill="url(#innerNode)" stroke="url(#borderGrad2)" stroke-width="2" filter="url(#ringGlow2)"/>
+        <text x="200" y="222" font-family="'Courier New',monospace" font-size="72" font-weight="900" fill="#22D3EE" text-anchor="middle" filter="url(#cyanGlow2)" letter-spacing="-2">1</text>
+        <text x="200" y="55" font-family="'Courier New',monospace" font-size="13" font-weight="700" fill="#94A3B8" text-anchor="middle" letter-spacing="8">BATCH SIZE</text>
+        <line x1="130" y1="62" x2="270" y2="62" stroke="#22D3EE" stroke-width="0.6" stroke-opacity="0.35"/>
+        <text x="200" y="78" font-family="'Courier New',monospace" font-size="11" fill="#22D3EE" text-anchor="middle" letter-spacing="3" fill-opacity="0.7">: : 1 : :</text>
+        <line x1="100" y1="336" x2="300" y2="336" stroke="#22D3EE" stroke-width="0.6" stroke-opacity="0.25"/>
+        <text x="200" y="357" font-family="'Courier New',monospace" font-size="9.5" fill="#64748B" text-anchor="middle" letter-spacing="4.5">SOLO · OPTIMIZED · PRECISE</text>
+        <polyline points="22,42 22,22 42,22" fill="none" stroke="#22D3EE" stroke-width="1.5" stroke-opacity="0.4" stroke-linecap="round"/>
+        <polyline points="358,42 358,22 338,22" fill="none" stroke="#22D3EE" stroke-width="1.5" stroke-opacity="0.4" stroke-linecap="round"/>
+        <polyline points="22,358 22,378 42,378" fill="none" stroke="#818CF8" stroke-width="1.5" stroke-opacity="0.4" stroke-linecap="round"/>
+        <polyline points="358,358 358,378 338,378" fill="none" stroke="#818CF8" stroke-width="1.5" stroke-opacity="0.4" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;flex:1;">
+      <div class="cover-field">Team Name : <span>Batch Size: 1</span></div>
+      <div class="cover-field">Team Leader Name : <span>Drishti</span></div>
+      <div class="cover-field">Problem Statement : <span>Build an AI system that ranks 100,000 candidates for a Senior AI Engineer role the way a great recruiter would. No keyword shortcuts. Real skill depth, career history, and availability signals that actually matter.</span></div>
+    </div>
   </div>
   <div class="footer-bar"></div>
 </div>
