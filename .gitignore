@@ -1,0 +1,22 @@
+# Large data files — not committed to repo
+candidates.jsonl
+artifacts/embeddings.npy
+artifacts/faiss_index.bin
+artifacts/candidate_features.pkl
+artifacts/candidate_features.jsonl
+artifacts/candidate_ids.pkl
+artifacts/model_cache/
+
+# Demo app is deployed separately to HuggingFace Spaces
+demo_app/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# OS
+.DS_Store
+Thumbs.db

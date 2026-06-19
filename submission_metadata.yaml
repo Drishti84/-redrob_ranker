@@ -1,0 +1,58 @@
+# Redrob Hackathon — Submission Metadata
+
+team_name: "redrob-ranker"
+
+primary_contact:
+  name: "Drishti"
+  email: "ddrishti_be23@thapar.edu"
+  phone: "+91-XXXXXXXXXX"
+
+team_members:
+  - name: "Drishti"
+    email: "ddrishti_be23@thapar.edu"
+    role: "Team Lead / ML Engineer"
+
+github_repo: "https://github.com/YOUR_USERNAME/redrob-ranker"
+
+sandbox_link: "https://huggingface.co/spaces/Drishti84/redrob-ranker"
+
+reproduce_command: "python rank.py --candidates ./candidates.jsonl --out ./submission.csv"
+
+compute:
+  platform: "Local CPU machine"
+  cpu_cores: 8
+  ram_gb: 16
+  python_version: "3.13.1"
+  os: "Windows 11"
+  uses_gpu_for_inference: false
+  has_network_during_ranking: false
+  pre_computation_required: true
+  pre_computation_time_minutes: 30
+
+ai_tools_used:
+  - "Claude"
+
+ai_usage_summary: |
+  Used Claude for architecture design, scoring formula refinement, and code review.
+  All engineering decisions (scoring weights, feature extraction logic, honeypot
+  detection heuristics, reasoning generation branching) were made by the human.
+  No candidate data was fed to any LLM during ranking.
+
+methodology_summary: |
+  Two-phase hybrid ranker. Offline precompute generates sentence embeddings
+  (all-MiniLM-L6-v2) for 100K candidates saved as a normalised float32 matrix.
+  At ranking time: JD is embedded locally (no network), cosine similarities
+  computed via a single matrix multiply (~0.04s), then a weighted 5-component
+  scorer (skill match 35%, career quality 25%, behavioral availability 20%,
+  semantic fit 15%, education 5%) produces final scores across all 100K in ~1.7s.
+  Full sweep eliminates FAISS recall loss. Career quality explicitly penalises
+  consulting-only backgrounds and non-AI titles (keyword stuffer penalty 0.40x).
+  Honeypot detection filters candidates with impossible career date math,
+  expert skills with 0 months used, or 180+ day job overlaps. Runs in ~30s total.
+
+declarations:
+  read_submission_spec: true
+  code_is_original_work: true
+  no_collusion: true
+  honeypot_check_done: true
+  reproduction_tested: true
