@@ -2,899 +2,896 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Redrob AI Candidate Ranker — Technical Deck</title>
+<title>Redrob — Intelligent Candidate Ranker</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  :root {
-    --blue:    #1d4ed8;
-    --blue-lt: #3b82f6;
-    --indigo:  #4f46e5;
-    --slate:   #0f172a;
-    --muted:   #64748b;
-    --border:  #e2e8f0;
-    --bg:      #f8fafc;
-    --white:   #ffffff;
-    --green:   #059669;
-    --amber:   #d97706;
-    --red:     #dc2626;
-  }
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: #1a1a2e;
+}
 
-  body {
-    font-family: 'Inter', system-ui, sans-serif;
-    background: #1e293b;
-    color: var(--slate);
-  }
+/* ── SLIDE SHELL ── */
+.slide {
+  width: 1120px;
+  height: 630px;
+  margin: 20px auto;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  page-break-after: always;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+}
 
-  /* ── Slide shell ── */
-  .slide {
-    width: 960px;
-    min-height: 540px;
-    margin: 24px auto;
-    background: var(--white);
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.35);
-    page-break-after: always;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-  }
+/* ── AURORA BACKGROUND (cover + closing) ── */
+.aurora-bg {
+  background:
+    radial-gradient(ellipse 55% 80% at 20% 60%, rgba(194, 65, 12, 0.85) 0%, transparent 65%),
+    radial-gradient(ellipse 45% 70% at 80% 40%, rgba(124, 58, 237, 0.7) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 50% 100%, rgba(99, 14, 160, 0.5) 0%, transparent 60%),
+    #0d0a1f;
+}
 
-  /* ── Slide number pill ── */
-  .slide-num {
-    position: absolute;
-    bottom: 18px;
-    right: 24px;
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--muted);
-    letter-spacing: 0.5px;
-  }
+/* ── HEADER BAR (content slides) ── */
+.nav {
+  background: #0a0a0a;
+  height: 62px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 36px;
+  flex-shrink: 0;
+}
 
-  /* ─────────────── COVER ─────────────── */
-  .cover {
-    background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #1d4ed8 100%);
-    color: white;
-    padding: 0;
-    min-height: 540px;
-    justify-content: center;
-    align-items: flex-start;
-  }
-  .cover-inner {
-    padding: 64px 72px;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    height: 100%;
-    justify-content: space-between;
-  }
-  .cover-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(255,255,255,0.12);
-    border: 1px solid rgba(255,255,255,0.2);
-    border-radius: 100px;
-    padding: 6px 16px;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: #93c5fd;
-    width: fit-content;
-  }
-  .cover-title {
-    font-size: 52px;
-    font-weight: 800;
-    line-height: 1.05;
-    letter-spacing: -1.5px;
-    color: white;
-  }
-  .cover-title span { color: #60a5fa; }
-  .cover-sub {
-    font-size: 18px;
-    font-weight: 400;
-    color: #94a3b8;
-    margin-top: 16px;
-    line-height: 1.5;
-  }
-  .cover-meta {
-    display: flex;
-    gap: 40px;
-    margin-top: 40px;
-  }
-  .cover-meta-item { display: flex; flex-direction: column; gap: 4px; }
-  .cover-meta-label { font-size: 11px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.8px; }
-  .cover-meta-val { font-size: 15px; font-weight: 600; color: #e2e8f0; }
-  .cover-chips {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-  .chip {
-    background: rgba(255,255,255,0.1);
-    border: 1px solid rgba(255,255,255,0.15);
-    border-radius: 6px;
-    padding: 5px 12px;
-    font-size: 12px;
-    font-weight: 500;
-    color: #cbd5e1;
-  }
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
 
-  /* ─────────────── STANDARD SLIDE ─────────────── */
-  .slide-header {
-    padding: 36px 56px 24px;
-    border-bottom: 1px solid var(--border);
-  }
-  .slide-label {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--blue);
-    margin-bottom: 8px;
-  }
-  .slide-title {
-    font-size: 30px;
-    font-weight: 800;
-    color: var(--slate);
-    letter-spacing: -0.5px;
-    line-height: 1.15;
-  }
-  .slide-body {
-    padding: 32px 56px 48px;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
+/* Redrob logo mark */
+.logo-redrob {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+}
+.logo-hex {
+  width: 22px;
+  height: 22px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.logo-hex svg { width: 22px; height: 22px; }
 
-  /* ─────────────── COMPONENTS ─────────────── */
-  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+.logo-divider {
+  width: 1px;
+  height: 24px;
+  background: #444;
+  margin: 0 4px;
+}
 
-  .card {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 20px 22px;
-  }
-  .card-title {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--slate);
-    margin-bottom: 8px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .card-body {
-    font-size: 13px;
-    color: #475569;
-    line-height: 1.6;
-  }
+.logo-h2s {
+  color: white;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  font-style: italic;
+  opacity: 0.9;
+}
 
-  .stat-card {
-    background: linear-gradient(135deg, var(--blue) 0%, var(--indigo) 100%);
-    border-radius: 10px;
-    padding: 22px 24px;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-  .stat-num { font-size: 36px; font-weight: 800; line-height: 1; letter-spacing: -1px; }
-  .stat-label { font-size: 12px; font-weight: 500; color: #bfdbfe; margin-top: 4px; }
+.nav-india-runs {
+  font-family: 'Inter', sans-serif;
+  font-style: italic;
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: 0.5px;
+  background: linear-gradient(90deg, #ffffff 0%, #c4b5fd 60%, #a78bfa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
 
-  .stat-card.green { background: linear-gradient(135deg, #065f46, #059669); }
-  .stat-card.amber { background: linear-gradient(135deg, #92400e, #d97706); }
-  .stat-card.slate { background: linear-gradient(135deg, #1e293b, #334155); }
+/* ── FOOTER BAR ── */
+.footer-bar {
+  height: 7px;
+  background: linear-gradient(90deg, #2563eb 0%, #4f46e5 50%, #7c3aed 100%);
+  flex-shrink: 0;
+  margin-top: auto;
+}
 
-  .pill {
-    display: inline-block;
-    border-radius: 100px;
-    padding: 3px 10px;
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-  .pill-blue { background: #dbeafe; color: #1d4ed8; }
-  .pill-green { background: #d1fae5; color: #065f46; }
-  .pill-red { background: #fee2e2; color: #991b1b; }
-  .pill-amber { background: #fef3c7; color: #92400e; }
+/* ── CONTENT AREA ── */
+.body {
+  flex: 1;
+  background: white;
+  padding: 36px 52px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  overflow: hidden;
+}
 
-  .code {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    background: #0f172a;
-    color: #e2e8f0;
-    border-radius: 8px;
-    padding: 18px 22px;
-    line-height: 1.7;
-    overflow: hidden;
-  }
-  .code .kw { color: #818cf8; }
-  .code .fn { color: #60a5fa; }
-  .code .str { color: #86efac; }
-  .code .cm { color: #475569; }
-  .code .num { color: #fb923c; }
+.slide-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.3px;
+  margin-bottom: 4px;
+}
 
-  .flow {
-    display: flex;
-    align-items: center;
-    gap: 0;
-  }
-  .flow-step {
-    flex: 1;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 14px 16px;
-    text-align: center;
-  }
-  .flow-step-icon { font-size: 22px; margin-bottom: 6px; }
-  .flow-step-title { font-size: 12px; font-weight: 700; color: var(--slate); }
-  .flow-step-sub { font-size: 11px; color: var(--muted); margin-top: 3px; }
-  .flow-arrow {
-    font-size: 18px;
-    color: var(--blue);
-    padding: 0 6px;
-    flex-shrink: 0;
-    font-weight: 700;
-  }
+/* ── BULLETS ── */
+.bullets { display: flex; flex-direction: column; gap: 14px; }
+.bullet  { display: flex; align-items: flex-start; gap: 14px; }
+.dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: #5b21b6;
+  flex-shrink: 0;
+  margin-top: 5px;
+}
+.bullet-text {
+  font-size: 15.5px;
+  color: #1e293b;
+  line-height: 1.55;
+  font-weight: 400;
+}
+.bullet-text strong { font-weight: 700; color: #0f172a; }
 
-  .weight-bar-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 8px;
-  }
-  .weight-label { font-size: 13px; font-weight: 600; color: var(--slate); width: 160px; flex-shrink: 0; }
-  .weight-bar-bg { flex: 1; background: var(--border); border-radius: 100px; height: 10px; }
-  .weight-bar-fill { height: 10px; border-radius: 100px; }
-  .weight-pct { font-size: 12px; font-weight: 700; color: var(--muted); width: 36px; text-align: right; }
+/* ── COVER ── */
+.cover-top {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 40px 0 0;
+}
 
-  .signal-desc { font-size: 11px; color: var(--muted); width: 160px; margin-top: -5px; margin-bottom: 6px; padding-left: 0; }
+.cover-logos {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.cover-logo-redrob {
+  display: flex; align-items: center; gap: 8px;
+  color: white; font-size: 20px; font-weight: 800;
+}
+.cover-logo-divider { width: 1px; height: 28px; background: rgba(255,255,255,0.35); margin: 0 4px; }
+.cover-logo-h2s { color: white; font-size: 18px; font-weight: 800; letter-spacing: 1px; font-style: italic; }
 
-  table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
-  th { background: var(--slate); color: white; padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
-  th:first-child { border-radius: 6px 0 0 6px; }
-  th:last-child  { border-radius: 0 6px 6px 0; }
-  td { padding: 10px 14px; border-bottom: 1px solid var(--border); color: #334155; }
-  tr:last-child td { border-bottom: none; }
-  tr:nth-child(even) td { background: var(--bg); }
-  .td-rank { font-weight: 800; color: var(--blue); font-size: 14px; }
-  .td-score { font-weight: 700; color: var(--green); }
+.cover-india-runs {
+  font-family: 'Inter', sans-serif;
+  font-style: italic;
+  font-weight: 900;
+  font-size: 80px;
+  letter-spacing: -2px;
+  line-height: 1;
+  background: linear-gradient(180deg, #ffffff 20%, #c4b5fd 70%, #a78bfa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
+}
 
-  .bullet { display: flex; gap: 10px; margin-bottom: 10px; }
-  .bullet-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--blue); flex-shrink: 0; margin-top: 7px; }
-  .bullet-text { font-size: 13.5px; color: #334155; line-height: 1.5; }
+.cover-tagline-pill {
+  border: 1.5px solid rgba(255,255,255,0.45);
+  border-radius: 100px;
+  padding: 10px 32px;
+  color: rgba(255,255,255,0.88);
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0.2px;
+}
 
-  .highlight-box {
-    background: #eff6ff;
-    border-left: 4px solid var(--blue);
-    border-radius: 0 8px 8px 0;
-    padding: 14px 18px;
-    font-size: 13px;
-    color: #1e40af;
-    font-weight: 500;
-  }
-  .warn-box {
-    background: #fff7ed;
-    border-left: 4px solid var(--amber);
-    border-radius: 0 8px 8px 0;
-    padding: 14px 18px;
-    font-size: 13px;
-    color: #92400e;
-    font-weight: 500;
-  }
+/* Cover fields */
+.cover-fields {
+  background: white;
+  padding: 28px 52px 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.cover-field {
+  font-size: 17px;
+  font-weight: 700;
+  color: #0f172a;
+}
+.cover-field span { font-weight: 400; color: #334155; margin-left: 6px; }
 
-  /* print */
-  @media print {
-    body { background: white; }
-    .slide { margin: 0; border-radius: 0; box-shadow: none; page-break-after: always; }
-  }
+/* ── GRID LAYOUTS ── */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+
+.card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 16px 18px;
+}
+.card-head {
+  font-size: 13px; font-weight: 700; color: #0f172a;
+  margin-bottom: 8px; display: flex; align-items: center; gap: 7px;
+}
+.card-body { font-size: 12.5px; color: #475569; line-height: 1.6; }
+.card-body strong { color: #0f172a; font-weight: 700; }
+
+/* Stat cards */
+.stat-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-bottom: 4px; }
+.stat {
+  background: linear-gradient(135deg, #1d4ed8, #4f46e5);
+  border-radius: 8px; padding: 16px 18px; color: white;
+}
+.stat.green  { background: linear-gradient(135deg, #065f46, #059669); }
+.stat.orange { background: linear-gradient(135deg, #92400e, #d97706); }
+.stat.slate  { background: linear-gradient(135deg, #1e293b, #334155); }
+.stat-num   { font-size: 30px; font-weight: 900; line-height: 1; letter-spacing: -1px; }
+.stat-label { font-size: 11px; color: rgba(255,255,255,0.7); margin-top: 4px; font-weight: 500; }
+
+/* Weight bars */
+.wbar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+.wbar-label { font-size: 13px; font-weight: 600; color: #0f172a; width: 170px; flex-shrink: 0; }
+.wbar-bg { flex: 1; background: #e2e8f0; border-radius: 100px; height: 9px; }
+.wbar-fill { height: 9px; border-radius: 100px; }
+.wbar-pct { font-size: 12px; font-weight: 700; color: #64748b; width: 36px; text-align: right; }
+
+/* Flow diagram */
+.flow { display: flex; align-items: center; gap: 0; }
+.fstep {
+  flex: 1; background: #f1f5f9; border: 1px solid #cbd5e1;
+  border-radius: 7px; padding: 10px 12px; text-align: center;
+}
+.fstep-icon { font-size: 18px; margin-bottom: 4px; }
+.fstep-title { font-size: 11.5px; font-weight: 700; color: #0f172a; }
+.fstep-sub   { font-size: 10px; color: #64748b; margin-top: 2px; }
+.farrow { font-size: 16px; color: #4f46e5; font-weight: 900; padding: 0 4px; flex-shrink: 0; }
+
+/* Table */
+table { width: 100%; border-collapse: collapse; font-size: 12px; }
+th { background: #0f172a; color: white; padding: 8px 12px; text-align: left;
+     font-size: 10.5px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; }
+th:first-child { border-radius: 5px 0 0 5px; }
+th:last-child  { border-radius: 0 5px 5px 0; }
+td { padding: 7px 12px; border-bottom: 1px solid #f1f5f9; color: #334155; }
+tr:last-child td { border-bottom: none; }
+tr:nth-child(even) td { background: #f8fafc; }
+.td-rank  { font-weight: 900; color: #4f46e5; font-size: 13px; }
+.td-score { font-weight: 700; color: #059669; }
+
+/* Highlight box */
+.hbox {
+  background: #eff6ff; border-left: 4px solid #2563eb;
+  border-radius: 0 7px 7px 0; padding: 12px 16px;
+  font-size: 13px; color: #1e40af; font-weight: 500; line-height: 1.5;
+}
+.wbox {
+  background: #fef3c7; border-left: 4px solid #d97706;
+  border-radius: 0 7px 7px 0; padding: 12px 16px;
+  font-size: 13px; color: #92400e; font-weight: 500; line-height: 1.5;
+}
+
+/* Code block */
+.code {
+  font-family: 'Courier New', monospace;
+  font-size: 12px; background: #0f172a; color: #e2e8f0;
+  border-radius: 7px; padding: 14px 18px; line-height: 1.7;
+}
+.kw { color: #818cf8; } .str { color: #86efac; } .cm { color: #475569; }
+
+/* pill */
+.pill {
+  display: inline-block; border-radius: 100px; padding: 2px 9px;
+  font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px;
+}
+.pill-purple { background: #ede9fe; color: #5b21b6; }
+.pill-green  { background: #d1fae5; color: #065f46; }
+
+/* Arch boxes */
+.arch-phase { background: #0f172a; border-radius: 9px; padding: 16px 20px; }
+.arch-phase-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;
+  color: #64748b; margin-bottom: 12px;
+}
+
+/* Thank you slide */
+.ty-inner {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 20px; padding: 20px;
+}
+.ty-india-runs {
+  font-style: italic; font-weight: 900; font-size: 92px; letter-spacing: -2px; line-height: 1;
+  background: linear-gradient(180deg, #ffffff 10%, #c4b5fd 65%, #a78bfa 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.ty-tagline-pill {
+  border: 1.5px solid rgba(255,255,255,0.4); border-radius: 100px;
+  padding: 10px 36px; color: rgba(255,255,255,0.85); font-size: 16px;
+}
+.ty-text {
+  font-size: 64px; font-weight: 900; letter-spacing: -1px; color: white;
+}
+.ty-text span { color: #c4b5fd; }
+
+/* ── SVG logo helper ── */
+.hex-icon { display:inline-block; }
+
+@media print {
+  body { background: white; }
+  .slide { margin: 0; box-shadow: none; page-break-after: always; }
+}
 </style>
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════════════════════════════
+<!-- ════════════════════════════════════
      SLIDE 1  —  COVER
-════════════════════════════════════════════════════════════════ -->
-<div class="slide cover">
-  <div class="cover-inner">
-    <div>
-      <div class="cover-badge">🏆 Redrob Hackathon 2025</div>
+════════════════════════════════════ -->
+<div class="slide aurora-bg">
+  <div class="cover-top">
+    <div class="cover-logos">
+      <div class="cover-logo-redrob">
+        <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+          <path d="M13 2L23.3923 8V20L13 26L2.60769 20V8L13 2Z" fill="#ffffff" opacity="0.9"/>
+          <path d="M13 6L19.9282 10V18L13 22L6.07179 18V10L13 6Z" fill="#0a0a0a"/>
+          <path d="M13 9L17.3301 11.5V16.5L13 19L8.66987 16.5V11.5L13 9Z" fill="white" opacity="0.8"/>
+        </svg>
+        redrob
+      </div>
+      <div class="cover-logo-divider"></div>
+      <div class="cover-logo-h2s">H2S</div>
     </div>
-    <div>
-      <div class="cover-title">Intelligent<br>Candidate <span>Ranker</span></div>
-      <div class="cover-sub">
-        An AI system that ranks 100,000 candidates the way a great recruiter would —<br>
-        combining skill evidence, career trajectory, and behavioral availability signals.
-      </div>
-      <div class="cover-chips" style="margin-top:24px;">
-        <span class="chip">Sentence Transformers</span>
-        <span class="chip">5-Signal Scorer</span>
-        <span class="chip">Honeypot Detection</span>
-        <span class="chip">29s on CPU</span>
-        <span class="chip">100K Candidates</span>
-      </div>
-    </div>
-    <div class="cover-meta">
-      <div class="cover-meta-item">
-        <span class="cover-meta-label">Submitted By</span>
-        <span class="cover-meta-val">Drishti</span>
-      </div>
-      <div class="cover-meta-item">
-        <span class="cover-meta-label">Email</span>
-        <span class="cover-meta-val">ddrishti_be23@thapar.edu</span>
-      </div>
-      <div class="cover-meta-item">
-        <span class="cover-meta-label">Demo</span>
-        <span class="cover-meta-val">huggingface.co/spaces/Drishti84/redrob-ranker</span>
-      </div>
-      <div class="cover-meta-item">
-        <span class="cover-meta-label">Code</span>
-        <span class="cover-meta-val">github.com/Drishti84/-redrob_ranker</span>
-      </div>
-    </div>
+    <div class="cover-india-runs">INDIA.RUNS</div>
+    <div class="cover-tagline-pill">Build what next India runs on</div>
   </div>
+
+  <div class="cover-fields">
+    <div class="cover-field">Team Name : <span>redrob-ranker</span></div>
+    <div class="cover-field">Team Leader Name : <span>Drishti</span></div>
+    <div class="cover-field">Problem Statement : <span>Intelligent Candidate Discovery &amp; Ranking — build an AI system that ranks 100,000 candidates for a Senior AI Engineer role the way a great recruiter would, using skill evidence, career trajectory, and behavioral availability signals.</span></div>
+  </div>
+  <div class="footer-bar"></div>
 </div>
 
 
-<!-- ═══════════════════════════════════════════════════════════════
-     SLIDE 2  —  THE PROBLEM
-════════════════════════════════════════════════════════════════ -->
+<!-- ════════════════════════════════════
+     SLIDE 2  —  SOLUTION OVERVIEW
+════════════════════════════════════ -->
 <div class="slide">
-  <div class="slide-header">
-    <div class="slide-label">The Challenge</div>
-    <div class="slide-title">Finding the right AI engineer<br>in 100,000 profiles</div>
-  </div>
-  <div class="slide-body">
-    <div class="three-col">
-      <div class="stat-card">
-        <div class="stat-num">100K</div>
-        <div class="stat-label">Candidate profiles (464 MB JSONL)</div>
+  <div class="nav">
+    <div class="nav-left">
+      <div class="logo-redrob">
+        <svg class="hex-icon" width="20" height="20" viewBox="0 0 26 26" fill="none">
+          <path d="M13 2L23.3923 8V20L13 26L2.60769 20V8L13 2Z" fill="white" opacity="0.85"/>
+          <path d="M13 6L19.9282 10V18L13 22L6.07179 18V10L13 6Z" fill="#0a0a0a"/>
+          <path d="M13 9L17.3301 11.5V16.5L13 19L8.66987 16.5V11.5L13 9Z" fill="white" opacity="0.75"/>
+        </svg>
+        redrob
       </div>
-      <div class="stat-card amber">
-        <div class="stat-num">~65</div>
-        <div class="stat-label">Honeypot traps — impossible profiles</div>
-      </div>
-      <div class="stat-card green">
-        <div class="stat-num">29s</div>
-        <div class="stat-label">Total ranking time on CPU</div>
-      </div>
+      <div class="logo-divider"></div>
+      <div class="logo-h2s">H2S</div>
     </div>
+    <div class="nav-india-runs">INDIA.RUNS</div>
+  </div>
 
-    <div class="two-col" style="margin-top:8px;">
-      <div>
-        <div class="card-title" style="font-size:14px; font-weight:700; color:var(--slate); margin-bottom:12px;">Evaluation Metrics</div>
-        <div class="bullet"><div class="bullet-dot"></div><div class="bullet-text"><strong>NDCG@10 (50%)</strong> — Are the best candidates in the top 10?</div></div>
-        <div class="bullet"><div class="bullet-dot"></div><div class="bullet-text"><strong>NDCG@50 (30%)</strong> — Quality across the top 50?</div></div>
-        <div class="bullet"><div class="bullet-dot"></div><div class="bullet-text"><strong>MAP (15%)</strong> — Average precision across relevant ranks</div></div>
-        <div class="bullet"><div class="bullet-dot"></div><div class="bullet-text"><strong>P@10 (5%)</strong> — At least 8 of top 10 must be genuinely relevant</div></div>
+  <div class="body">
+    <div class="slide-title">Solution Overview</div>
+    <div class="bullets">
+      <div class="bullet">
+        <div class="dot"></div>
+        <div class="bullet-text"><strong>Proposed solution:</strong> A two-phase hybrid ranker. Phase 1 (offline) pre-computes sentence embeddings and extracts 30+ structured signals for all 100,000 candidates. Phase 2 (online) embeds the JD locally, computes cosine similarities via a single matrix multiply, scores all candidates with a 5-signal weighted scorer, and produces the ranked top-100 CSV — all in 29 seconds on CPU with zero network calls.</div>
       </div>
-      <div>
-        <div class="card-title" style="font-size:14px; font-weight:700; color:var(--slate); margin-bottom:12px;">Hard Constraints</div>
-        <div class="bullet"><div class="bullet-dot" style="background:#dc2626"></div><div class="bullet-text">Ranking must complete in <strong>&lt; 5 minutes</strong> on CPU</div></div>
-        <div class="bullet"><div class="bullet-dot" style="background:#dc2626"></div><div class="bullet-text"><strong>No network access</strong> during ranking</div></div>
-        <div class="bullet"><div class="bullet-dot" style="background:#dc2626"></div><div class="bullet-text"><strong>≤ 16 GB RAM</strong>, ≤ 5 GB disk</div></div>
-        <div class="bullet"><div class="bullet-dot" style="background:#dc2626"></div><div class="bullet-text">Honeypots &gt; 10% of top-100 → <strong>disqualification</strong></div></div>
-        <div class="bullet"><div class="bullet-dot" style="background:#dc2626"></div><div class="bullet-text">Scores must be <strong>non-increasing</strong> across ranks</div></div>
+      <div class="bullet">
+        <div class="dot"></div>
+        <div class="bullet-text"><strong>What differentiates this from traditional matching:</strong> Traditional systems match keywords — a candidate who lists "FAISS" scores the same whether they used it for 2 months as a beginner or 3 years in production. Our scorer weights each skill by <strong>proficiency × duration × endorsements</strong>. Career quality distinguishes product-company AI engineers from consulting-only profiles or keyword stuffers (0.40× penalty). A dedicated <strong>availability score</strong> from 23 behavioral platform signals ensures we surface candidates who will actually respond and join. Honeypot detection removes ~65 impossible profiles. No LLMs involved — every signal is structured and auditable.</div>
       </div>
     </div>
   </div>
-  <div class="slide-num">2 / 10</div>
+  <div class="footer-bar"></div>
 </div>
 
 
-<!-- ═══════════════════════════════════════════════════════════════
-     SLIDE 3  —  ARCHITECTURE
-════════════════════════════════════════════════════════════════ -->
+<!-- ════════════════════════════════════
+     SLIDE 3  —  JD UNDERSTANDING
+════════════════════════════════════ -->
 <div class="slide">
-  <div class="slide-header">
-    <div class="slide-label">Architecture</div>
-    <div class="slide-title">Two-phase design: Precompute offline,<br>rank online in 29 seconds</div>
+  <div class="nav">
+    <div class="nav-left">
+      <div class="logo-redrob">
+        <svg class="hex-icon" width="20" height="20" viewBox="0 0 26 26" fill="none">
+          <path d="M13 2L23.3923 8V20L13 26L2.60769 20V8L13 2Z" fill="white" opacity="0.85"/>
+          <path d="M13 6L19.9282 10V18L13 22L6.07179 18V10L13 6Z" fill="#0a0a0a"/>
+          <path d="M13 9L17.3301 11.5V16.5L13 19L8.66987 16.5V11.5L13 9Z" fill="white" opacity="0.75"/>
+        </svg>
+        redrob
+      </div>
+      <div class="logo-divider"></div>
+      <div class="logo-h2s">H2S</div>
+    </div>
+    <div class="nav-india-runs">INDIA.RUNS</div>
   </div>
-  <div class="slide-body">
 
-    <div style="background:#0f172a; border-radius:10px; padding:28px 32px;">
-      <div style="color:#64748b; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:20px;">Phase 1 — Offline Precompute (runs once)</div>
+  <div class="body">
+    <div class="slide-title">JD Understanding &amp; Candidate Evaluation</div>
+    <div class="two-col" style="flex:1;">
+      <div>
+        <div style="font-size:14px;font-weight:700;color:#0f172a;margin-bottom:10px;">Key requirements extracted from the JD</div>
+        <div class="bullets">
+          <div class="bullet"><div class="dot"></div><div class="bullet-text"><strong>Experience:</strong> 5–9 years, product company scale, shipped to real users</div></div>
+          <div class="bullet"><div class="dot"></div><div class="bullet-text"><strong>Vector search:</strong> Pinecone, Weaviate, Qdrant, Milvus, OpenSearch, Elasticsearch, FAISS</div></div>
+          <div class="bullet"><div class="dot"></div><div class="bullet-text"><strong>Embeddings:</strong> sentence-transformers, BGE, E5, OpenAI embeddings in production</div></div>
+          <div class="bullet"><div class="dot"></div><div class="bullet-text"><strong>Evaluation:</strong> NDCG, MRR, MAP, A/B testing — not just building, but measuring</div></div>
+          <div class="bullet"><div class="dot"></div><div class="bullet-text"><strong>LLM fine-tuning:</strong> LoRA, QLoRA, PEFT or learning-to-rank (XGBoost, LambdaRank)</div></div>
+          <div class="bullet"><div class="dot"></div><div class="bullet-text"><strong>Location:</strong> India, Pune/Noida, hybrid — availability signals matter</div></div>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:14px;font-weight:700;color:#0f172a;margin-bottom:10px;">Beyond keyword matching — how we evaluate fit</div>
+        <div class="bullets">
+          <div class="bullet"><div class="dot"></div><div class="bullet-text"><strong>Skill depth:</strong> Each skill hit scored by proficiency (beginner 0.4× → expert 1.0×), duration (0–6 mo: 0.5×, 24+ mo: 1.0×), and endorsement count (+20% max)</div></div>
+          <div class="bullet"><div class="dot"></div><div class="bullet-text"><strong>Career evidence:</strong> ai_role_months measures how long they've actually worked in AI titles — separate from skills they claim to have</div></div>
+          <div class="bullet"><div class="dot"></div><div class="bullet-text"><strong>Semantic similarity:</strong> Cosine distance between the full JD text and the candidate's profile text (all-MiniLM-L6-v2, 384-dim)</div></div>
+          <div class="bullet"><div class="dot"></div><div class="bullet-text"><strong>Hireability:</strong> 23 platform signals — open_to_work, notice_days, response_rate, interview_rate, github_score, days_since_active</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bar"></div>
+</div>
+
+
+<!-- ════════════════════════════════════
+     SLIDE 4  —  RANKING METHODOLOGY
+════════════════════════════════════ -->
+<div class="slide">
+  <div class="nav">
+    <div class="nav-left">
+      <div class="logo-redrob">
+        <svg class="hex-icon" width="20" height="20" viewBox="0 0 26 26" fill="none">
+          <path d="M13 2L23.3923 8V20L13 26L2.60769 20V8L13 2Z" fill="white" opacity="0.85"/>
+          <path d="M13 6L19.9282 10V18L13 22L6.07179 18V10L13 6Z" fill="#0a0a0a"/>
+          <path d="M13 9L17.3301 11.5V16.5L13 19L8.66987 16.5V11.5L13 9Z" fill="white" opacity="0.75"/>
+        </svg>
+        redrob
+      </div>
+      <div class="logo-divider"></div>
+      <div class="logo-h2s">H2S</div>
+    </div>
+    <div class="nav-india-runs">INDIA.RUNS</div>
+  </div>
+
+  <div class="body">
+    <div class="slide-title">Ranking Methodology</div>
+
+    <div class="bullets" style="margin-bottom:2px;">
+      <div class="bullet">
+        <div class="dot"></div>
+        <div class="bullet-text"><strong>Retrieve:</strong> All 100K candidates are embedded offline with <code style="background:#f1f5f9;padding:1px 5px;border-radius:3px;font-size:12px;">all-MiniLM-L6-v2</code> (384-dim, L2-normalised). At rank time the JD is embedded locally → single matrix multiply <code style="background:#f1f5f9;padding:1px 5px;border-radius:3px;font-size:12px;">(100K×384) @ (384×1)</code> gives cosine similarities for all 100K in <strong>0.04 seconds</strong>. No FAISS pre-filter — full sweep eliminates recall loss.</div>
+      </div>
+      <div class="bullet">
+        <div class="dot"></div>
+        <div class="bullet-text"><strong>Models &amp; algorithms:</strong> sentence-transformers for embeddings. Weighted linear combination of 5 hand-crafted, interpretable signal functions. rapidfuzz for fuzzy skill name matching (catches "HuggingFace" vs "Hugging Face Transformers"). No black-box models.</div>
+      </div>
+    </div>
+
+    <div style="margin-top:2px;">
+      <div style="font-size:13px;font-weight:700;color:#0f172a;margin-bottom:8px;">How signals combine → final score</div>
+      <div class="wbar-row"><div class="wbar-label">Skill Match</div><div class="wbar-bg"><div class="wbar-fill" style="width:70%;background:#4f46e5;"></div></div><div class="wbar-pct">35%</div><div style="font-size:11px;color:#64748b;padding-left:10px;width:280px;">JD required skill coverage × avg proficiency/duration weight</div></div>
+      <div class="wbar-row"><div class="wbar-label">Career Quality</div><div class="wbar-bg"><div class="wbar-fill" style="width:50%;background:#2563eb;"></div></div><div class="wbar-pct">25%</div><div style="font-size:11px;color:#64748b;padding-left:10px;width:280px;">AI role months, product company, title alignment, tenure stability</div></div>
+      <div class="wbar-row"><div class="wbar-label">Availability</div><div class="wbar-bg"><div class="wbar-fill" style="width:40%;background:#0891b2;"></div></div><div class="wbar-pct">20%</div><div style="font-size:11px;color:#64748b;padding-left:10px;width:280px;">open_to_work, notice days, response rate, location, recency</div></div>
+      <div class="wbar-row"><div class="wbar-label">Semantic Fit</div><div class="wbar-bg"><div class="wbar-fill" style="width:30%;background:#7c3aed;"></div></div><div class="wbar-pct">15%</div><div style="font-size:11px;color:#64748b;padding-left:10px;width:280px;">Cosine similarity: candidate profile text ↔ JD embedding</div></div>
+      <div class="wbar-row"><div class="wbar-label">Education</div><div class="wbar-bg"><div class="wbar-fill" style="width:10%;background:#059669;"></div></div><div class="wbar-pct">5%</div><div style="font-size:11px;color:#64748b;padding-left:10px;width:280px;">4-tier: IIT/IISc (1.0) → BITS (0.9) → state eng (0.45) → other</div></div>
+    </div>
+  </div>
+  <div class="footer-bar"></div>
+</div>
+
+
+<!-- ════════════════════════════════════
+     SLIDE 5  —  EXPLAINABILITY
+════════════════════════════════════ -->
+<div class="slide">
+  <div class="nav">
+    <div class="nav-left">
+      <div class="logo-redrob">
+        <svg class="hex-icon" width="20" height="20" viewBox="0 0 26 26" fill="none">
+          <path d="M13 2L23.3923 8V20L13 26L2.60769 20V8L13 2Z" fill="white" opacity="0.85"/>
+          <path d="M13 6L19.9282 10V18L13 22L6.07179 18V10L13 6Z" fill="#0a0a0a"/>
+          <path d="M13 9L17.3301 11.5V16.5L13 19L8.66987 16.5V11.5L13 9Z" fill="white" opacity="0.75"/>
+        </svg>
+        redrob
+      </div>
+      <div class="logo-divider"></div>
+      <div class="logo-h2s">H2S</div>
+    </div>
+    <div class="nav-india-runs">INDIA.RUNS</div>
+  </div>
+
+  <div class="body">
+    <div class="slide-title">Explainability &amp; Data Validation</div>
+    <div class="bullets">
+      <div class="bullet">
+        <div class="dot"></div>
+        <div class="bullet-text"><strong>How ranking decisions are explained:</strong> Every candidate in the top-100 gets a fact-grounded recruiter-style reasoning string generated from extracted structured features — not from an LLM. Example: <em>"Senior AI Engineer at Apple with 5.9 yrs experience; 5+ yrs in AI/ML roles including FAISS, NLP, Python. open to work, 30d notice, high recruiter response rate (80%), India-based, active GitHub (score 97), tier 1 institution."</em> Language is rank-calibrated: ranks 1–10 are assertive, ranks 31–100 include honest concerns (e.g. long notice period, outside India).</div>
+      </div>
+      <div class="bullet">
+        <div class="dot"></div>
+        <div class="bullet-text"><strong>No hallucinations or unsupported justifications:</strong> Zero LLM calls during ranking. Every fact in the reasoning — title, company, YoE, skill names, availability status — is read directly from the structured feature dict extracted at precompute time. "FAISS" appears in reasoning only if it exists in the candidate's skill list with duration &gt; 0 months. No generation, no inference.</div>
+      </div>
+      <div class="bullet">
+        <div class="dot"></div>
+        <div class="bullet-text"><strong>Inconsistent, low-quality, and suspicious profiles:</strong> <strong>Honeypot detection</strong> (5 rules): career date math vs duration_months differs &gt;12 months; expert skill with 0 months used; YoE &gt;5 years beyond total career history; job overlap &gt;180 days; 5+ expert/advanced skills each used &lt;3 months — <strong>65 profiles flagged and excluded</strong>. <strong>Keyword stuffer penalty:</strong> non-AI current title (Marketing Manager, Civil Engineer…) + &lt;12 months AI work history → <strong>0.40× skill score multiplier</strong>. Profile completeness and verification status feed directly into availability score.</div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bar"></div>
+</div>
+
+
+<!-- ════════════════════════════════════
+     SLIDE 6  —  END-TO-END WORKFLOW
+════════════════════════════════════ -->
+<div class="slide">
+  <div class="nav">
+    <div class="nav-left">
+      <div class="logo-redrob">
+        <svg class="hex-icon" width="20" height="20" viewBox="0 0 26 26" fill="none">
+          <path d="M13 2L23.3923 8V20L13 26L2.60769 20V8L13 2Z" fill="white" opacity="0.85"/>
+          <path d="M13 6L19.9282 10V18L13 22L6.07179 18V10L13 6Z" fill="#0a0a0a"/>
+          <path d="M13 9L17.3301 11.5V16.5L13 19L8.66987 16.5V11.5L13 9Z" fill="white" opacity="0.75"/>
+        </svg>
+        redrob
+      </div>
+      <div class="logo-divider"></div>
+      <div class="logo-h2s">H2S</div>
+    </div>
+    <div class="nav-india-runs">INDIA.RUNS</div>
+  </div>
+
+  <div class="body">
+    <div class="slide-title">End-to-End Workflow</div>
+
+    <div class="arch-phase" style="margin-bottom:10px;">
+      <div class="arch-phase-label" style="color:#94a3b8;">⏱ Phase 1 — Offline Precompute (runs once, before evaluation)</div>
       <div class="flow">
-        <div class="flow-step" style="background:#1e293b; border-color:#334155;">
-          <div class="flow-step-icon">📄</div>
-          <div class="flow-step-title" style="color:#e2e8f0;">candidates.jsonl</div>
-          <div class="flow-step-sub" style="color:#64748b;">100K profiles, 464 MB</div>
+        <div class="fstep" style="background:#1e293b;border-color:#334155;">
+          <div class="fstep-icon">📄</div>
+          <div class="fstep-title" style="color:#e2e8f0;">candidates.jsonl</div>
+          <div class="fstep-sub" style="color:#64748b;">100K profiles · 464 MB</div>
         </div>
-        <div class="flow-arrow" style="color:#3b82f6;">→</div>
-        <div class="flow-step" style="background:#1e293b; border-color:#334155;">
-          <div class="flow-step-icon">⚙️</div>
-          <div class="flow-step-title" style="color:#e2e8f0;">Feature Extraction</div>
-          <div class="flow-step-sub" style="color:#64748b;">30+ signals per candidate</div>
+        <div class="farrow" style="color:#818cf8;">→</div>
+        <div class="fstep" style="background:#1e293b;border-color:#334155;">
+          <div class="fstep-icon">⚙️</div>
+          <div class="fstep-title" style="color:#e2e8f0;">Feature Extraction</div>
+          <div class="fstep-sub" style="color:#64748b;">30+ signals, honeypot flags</div>
         </div>
-        <div class="flow-arrow" style="color:#3b82f6;">→</div>
-        <div class="flow-step" style="background:#1e293b; border-color:#334155;">
-          <div class="flow-step-icon">🧠</div>
-          <div class="flow-step-title" style="color:#e2e8f0;">Embedding</div>
-          <div class="flow-step-sub" style="color:#64748b;">all-MiniLM-L6-v2, 384-dim</div>
+        <div class="farrow" style="color:#818cf8;">→</div>
+        <div class="fstep" style="background:#1e293b;border-color:#334155;">
+          <div class="fstep-icon">🧠</div>
+          <div class="fstep-title" style="color:#e2e8f0;">Embed Profiles</div>
+          <div class="fstep-sub" style="color:#64748b;">all-MiniLM-L6-v2 · 384-dim</div>
         </div>
-        <div class="flow-arrow" style="color:#3b82f6;">→</div>
-        <div class="flow-step" style="background:#1e293b; border-color:#334155;">
-          <div class="flow-step-icon">💾</div>
-          <div class="flow-step-title" style="color:#e2e8f0;">Artifacts</div>
-          <div class="flow-step-sub" style="color:#64748b;">features.jsonl + embeddings.npy</div>
+        <div class="farrow" style="color:#818cf8;">→</div>
+        <div class="fstep" style="background:#1e293b;border-color:#334155;">
+          <div class="fstep-icon">💾</div>
+          <div class="fstep-title" style="color:#e2e8f0;">Save Artifacts</div>
+          <div class="fstep-sub" style="color:#64748b;">features.jsonl + embeddings.npy</div>
         </div>
       </div>
+    </div>
 
-      <div style="color:#64748b; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:20px; margin-top:28px;">Phase 2 — Online Ranking (&lt; 5 minutes constraint)</div>
+    <div class="arch-phase">
+      <div class="arch-phase-label" style="color:#94a3b8;">⚡ Phase 2 — Online Ranking (29 seconds · CPU only · no network)</div>
       <div class="flow">
-        <div class="flow-step" style="background:#1e293b; border-color:#334155;">
-          <div class="flow-step-icon">📝</div>
-          <div class="flow-step-title" style="color:#e2e8f0;">JD Text</div>
-          <div class="flow-step-sub" style="color:#64748b;">Embed locally (10s)</div>
+        <div class="fstep" style="background:#1e293b;border-color:#334155;">
+          <div class="fstep-icon">📝</div>
+          <div class="fstep-title" style="color:#e2e8f0;">JD Input</div>
+          <div class="fstep-sub" style="color:#64748b;">Embed locally · 10.2s</div>
         </div>
-        <div class="flow-arrow" style="color:#10b981;">→</div>
-        <div class="flow-step" style="background:#1e293b; border-color:#334155;">
-          <div class="flow-step-icon">⚡</div>
-          <div class="flow-step-title" style="color:#e2e8f0;">Cosine Similarity</div>
-          <div class="flow-step-sub" style="color:#64748b;">Matrix multiply, 0.04s</div>
+        <div class="farrow" style="color:#34d399;">→</div>
+        <div class="fstep" style="background:#1e293b;border-color:#334155;">
+          <div class="fstep-icon">⚡</div>
+          <div class="fstep-title" style="color:#e2e8f0;">Cosine Sim (100K)</div>
+          <div class="fstep-sub" style="color:#64748b;">Matrix multiply · 0.04s</div>
         </div>
-        <div class="flow-arrow" style="color:#10b981;">→</div>
-        <div class="flow-step" style="background:#1e293b; border-color:#334155;">
-          <div class="flow-step-icon">🎯</div>
-          <div class="flow-step-title" style="color:#e2e8f0;">Score All 100K</div>
-          <div class="flow-step-sub" style="color:#64748b;">5-signal scorer, 1.7s</div>
+        <div class="farrow" style="color:#34d399;">→</div>
+        <div class="fstep" style="background:#1e293b;border-color:#334155;">
+          <div class="fstep-icon">🎯</div>
+          <div class="fstep-title" style="color:#e2e8f0;">Score All Candidates</div>
+          <div class="fstep-sub" style="color:#64748b;">5-signal scorer · 1.7s</div>
         </div>
-        <div class="flow-arrow" style="color:#10b981;">→</div>
-        <div class="flow-step" style="background:#1e293b; border-color:#334155;">
-          <div class="flow-step-icon">📊</div>
-          <div class="flow-step-title" style="color:#e2e8f0;">Top 100 CSV</div>
-          <div class="flow-step-sub" style="color:#64748b;">With reasoning strings</div>
+        <div class="farrow" style="color:#34d399;">→</div>
+        <div class="fstep" style="background:#1e293b;border-color:#334155;">
+          <div class="fstep-icon">📊</div>
+          <div class="fstep-title" style="color:#e2e8f0;">Top-100 CSV</div>
+          <div class="fstep-sub" style="color:#64748b;">With reasoning · 0.3s</div>
         </div>
       </div>
     </div>
 
-    <div class="highlight-box">
-      💡 Key insight: scoring 100K candidates takes only 1.7s. Running a full sweep (vs. FAISS pre-filtering) eliminates retrieval recall loss with zero time cost — giving 100% candidate coverage.
+    <div class="hbox" style="margin-top:8px;">
+      <strong>Reproduce in two commands:</strong> &nbsp;
+      <code style="font-family:monospace;font-size:12px;">python precompute.py --candidates ./candidates.jsonl --out ./artifacts</code>
+      &nbsp;→&nbsp;
+      <code style="font-family:monospace;font-size:12px;">python rank.py --candidates ./candidates.jsonl --out ./submission.csv</code>
     </div>
-
   </div>
-  <div class="slide-num">3 / 10</div>
+  <div class="footer-bar"></div>
 </div>
 
 
-<!-- ═══════════════════════════════════════════════════════════════
-     SLIDE 4  —  FEATURE EXTRACTION
-════════════════════════════════════════════════════════════════ -->
+<!-- ════════════════════════════════════
+     SLIDE 7  —  SYSTEM ARCHITECTURE
+════════════════════════════════════ -->
 <div class="slide">
-  <div class="slide-header">
-    <div class="slide-label">Feature Engineering</div>
-    <div class="slide-title">30+ signals extracted per candidate<br>from raw profile data</div>
+  <div class="nav">
+    <div class="nav-left">
+      <div class="logo-redrob">
+        <svg class="hex-icon" width="20" height="20" viewBox="0 0 26 26" fill="none">
+          <path d="M13 2L23.3923 8V20L13 26L2.60769 20V8L13 2Z" fill="white" opacity="0.85"/>
+          <path d="M13 6L19.9282 10V18L13 22L6.07179 18V10L13 6Z" fill="#0a0a0a"/>
+          <path d="M13 9L17.3301 11.5V16.5L13 19L8.66987 16.5V11.5L13 9Z" fill="white" opacity="0.75"/>
+        </svg>
+        redrob
+      </div>
+      <div class="logo-divider"></div>
+      <div class="logo-h2s">H2S</div>
+    </div>
+    <div class="nav-india-runs">INDIA.RUNS</div>
   </div>
-  <div class="slide-body">
-    <div class="two-col">
-      <div>
-        <div class="card" style="margin-bottom:14px;">
-          <div class="card-title">🔧 Skill Analysis</div>
-          <div class="card-body">
-            Each skill hit scored by <strong>proficiency level</strong> (beginner→expert: 0.4–1.0×),
-            <strong>duration weight</strong> (0–6 mo: 0.5×, 6–24: 0.8×, 24+: 1.0×), and
-            <strong>endorsement count</strong> (up to +20% boost).
-            Covers 14 required skills and 8 nice-to-have skills from the JD.
-          </div>
+
+  <div class="body">
+    <div class="slide-title">System Architecture</div>
+    <div class="two-col" style="flex:1; align-items:start;">
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div class="card" style="border-left:3px solid #4f46e5;">
+          <div class="card-head">🗂 precompute.py</div>
+          <div class="card-body">Loads candidates.jsonl → <strong>features.py</strong> extracts title classification, skill hits with proficiency/duration/endorsement weights, ai_role_months, consulting_only, has_product_experience, avg_tenure, education tier, all 23 redrob_signals, full_text for embedding → <strong>honeypot.py</strong> flags 65 impossible profiles → <strong>all-MiniLM-L6-v2</strong> embeds full_text (batch 256, L2-normalised) → saves features.jsonl + embeddings.npy</div>
         </div>
-        <div class="card" style="margin-bottom:14px;">
-          <div class="card-title">📈 Career History</div>
-          <div class="card-body">
-            Extracted: <strong>ai_role_months</strong> (total months in AI titles),
-            <strong>consulting_only</strong> flag (TCS, Infosys, Wipro, Cognizant…),
-            <strong>has_product_experience</strong>, <strong>avg_tenure_months</strong>,
-            <strong>title_chaser</strong> (avg tenure &lt; 18 months).
-          </div>
+        <div class="card" style="border-left:3px solid #0891b2;">
+          <div class="card-head">🎯 rank.py</div>
+          <div class="card-body">Loads artifacts (3.7s) → embeds JD from local model cache (10.2s) → dot product similarity all 100K (0.04s) → <strong>scorer.py</strong> computes 5-component weighted score per candidate, skipping honeypots (1.7s) → sort descending, pick top 100 → <strong>reasoning.py</strong> generates fact-grounded string per candidate → writes submission.csv</div>
         </div>
-        <div class="card">
-          <div class="card-title">🎓 Education</div>
-          <div class="card-body">
-            4-tier classification: <strong>Tier 1</strong> (IIT, IISc, BITS Pilani, NIT Trichy) →
-            <strong>Tier 4</strong> (unranked). Scores: 1.0 / 0.75 / 0.45 / 0.20.
-          </div>
+        <div class="card" style="border-left:3px solid #059669;">
+          <div class="card-head">🖥 demo_app/ (Gradio · HuggingFace Spaces)</div>
+          <div class="card-body">Loads pre-screened top-1000 features + embeddings (4 MB). User pastes any JD → embed → dot product → score → ranked table with adjustable weight sliders. Runs in ~15s, CPU Basic (free tier).</div>
         </div>
       </div>
-      <div>
-        <div class="card" style="margin-bottom:14px;">
-          <div class="card-title">📡 Availability (23 redrob_signals)</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div class="card" style="border-left:3px solid #7c3aed;">
+          <div class="card-head">⚙️ scorer.py — 5 components</div>
           <div class="card-body">
-            All 23 platform behavioral signals used:<br><br>
-            <span class="pill pill-green">open_to_work</span>&nbsp;
-            <span class="pill pill-blue">notice_days</span>&nbsp;
-            <span class="pill pill-blue">response_rate</span>&nbsp;
-            <span class="pill pill-blue">interview_rate</span>&nbsp;
-            <span class="pill pill-blue">offer_rate</span>&nbsp;
-            <span class="pill pill-blue">github_score</span>&nbsp;
-            <span class="pill pill-blue">profile_complete</span>&nbsp;
-            <span class="pill pill-blue">verified</span>&nbsp;
-            <span class="pill pill-blue">saved_30d</span>&nbsp;
-            <span class="pill pill-blue">in_india</span>&nbsp;
-            <span class="pill pill-blue">days_since_active</span>
+            <strong>skill_match:</strong> required_hits coverage × avg weight + text_boost + nice_score. Keyword stuffer penalty: 0.40× if non-AI title + &lt;12mo AI history.<br><br>
+            <strong>career_quality:</strong> starts 0.5 → +0.20 AI title, −0.35 non-AI, +0.20 4+ yrs AI, −0.30 consulting_only, +0.12 production keywords, −0.15 title_chaser.<br><br>
+            <strong>availability:</strong> open_to_work(+0.20), recency, response_rate(×0.18), interview_rate(×0.12), notice_days, location, github_score, verified.<br><br>
+            <strong>education:</strong> tier_1=1.0, tier_2=0.75, tier_3=0.45, tier_4=0.20.
           </div>
         </div>
-        <div class="card">
-          <div class="card-title">🔤 Embedding Text</div>
+        <div class="card" style="border-left:3px solid #d97706;">
+          <div class="card-head">🍯 honeypot.py — 5 detection rules</div>
           <div class="card-body">
-            Concatenated profile text for embedding: current title + company + all career roles + skills with durations + education. Structured to emphasise recent, domain-relevant tokens.
-            <br><br>
-            Model: <strong>all-MiniLM-L6-v2</strong> — 22M params, 384-dim, fast CPU inference, strong multilingual performance.
+            1. Career date math vs duration_months &gt;12 month gap<br>
+            2. Expert skill listed with 0 months experience<br>
+            3. YoE &gt;5 years beyond sum of all role durations<br>
+            4. Overlapping jobs &gt;180 days<br>
+            5. 5+ expert/advanced skills each used &lt;3 months<br><br>
+            <strong>65 profiles detected and excluded</strong>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div class="slide-num">4 / 10</div>
+  <div class="footer-bar"></div>
 </div>
 
 
-<!-- ═══════════════════════════════════════════════════════════════
-     SLIDE 5  —  SCORING FORMULA
-════════════════════════════════════════════════════════════════ -->
+<!-- ════════════════════════════════════
+     SLIDE 8  —  RESULTS & PERFORMANCE
+════════════════════════════════════ -->
 <div class="slide">
-  <div class="slide-header">
-    <div class="slide-label">Scoring Formula</div>
-    <div class="slide-title">Five weighted signals → one final score</div>
+  <div class="nav">
+    <div class="nav-left">
+      <div class="logo-redrob">
+        <svg class="hex-icon" width="20" height="20" viewBox="0 0 26 26" fill="none">
+          <path d="M13 2L23.3923 8V20L13 26L2.60769 20V8L13 2Z" fill="white" opacity="0.85"/>
+          <path d="M13 6L19.9282 10V18L13 22L6.07179 18V10L13 6Z" fill="#0a0a0a"/>
+          <path d="M13 9L17.3301 11.5V16.5L13 19L8.66987 16.5V11.5L13 9Z" fill="white" opacity="0.75"/>
+        </svg>
+        redrob
+      </div>
+      <div class="logo-divider"></div>
+      <div class="logo-h2s">H2S</div>
+    </div>
+    <div class="nav-india-runs">INDIA.RUNS</div>
   </div>
-  <div class="slide-body">
 
-    <div class="code" style="margin-bottom:16px; font-size:13px;">
-      <span class="cm"># Final composite score (0–1)</span><br>
-      final = <span class="num">0.35</span> × skill_match<br>
-            + <span class="num">0.25</span> × career_quality<br>
-            + <span class="num">0.20</span> × availability<br>
-            + <span class="num">0.15</span> × semantic_fit<br>
-            + <span class="num">0.05</span> × education
+  <div class="body">
+    <div class="slide-title">Results &amp; Performance</div>
+
+    <div class="stat-row">
+      <div class="stat"><div class="stat-num">29s</div><div class="stat-label">Total ranking time on CPU</div></div>
+      <div class="stat green"><div class="stat-num">10×</div><div class="stat-label">Under the 5-min constraint</div></div>
+      <div class="stat orange"><div class="stat-num">65</div><div class="stat-label">Honeypots detected &amp; removed</div></div>
+      <div class="stat slate"><div class="stat-num">0.929</div><div class="stat-label">Top candidate score</div></div>
     </div>
 
-    <div style="margin-bottom:4px;">
-      <div class="weight-bar-row">
-        <div style="display:flex;flex-direction:column;">
-          <div class="weight-label">Skill Match</div>
-          <div class="signal-desc">JD coverage × proficiency</div>
-        </div>
-        <div class="weight-bar-bg"><div class="weight-bar-fill" style="width:70%; background:var(--blue);"></div></div>
-        <div class="weight-pct">35%</div>
-      </div>
-      <div class="weight-bar-row">
-        <div style="display:flex;flex-direction:column;">
-          <div class="weight-label">Career Quality</div>
-          <div class="signal-desc">AI role history, product co.</div>
-        </div>
-        <div class="weight-bar-bg"><div class="weight-bar-fill" style="width:50%; background:var(--indigo);"></div></div>
-        <div class="weight-pct">25%</div>
-      </div>
-      <div class="weight-bar-row">
-        <div style="display:flex;flex-direction:column;">
-          <div class="weight-label">Availability</div>
-          <div class="signal-desc">Open-to-work, notice, response</div>
-        </div>
-        <div class="weight-bar-bg"><div class="weight-bar-fill" style="width:40%; background:#0891b2;"></div></div>
-        <div class="weight-pct">20%</div>
-      </div>
-      <div class="weight-bar-row">
-        <div style="display:flex;flex-direction:column;">
-          <div class="weight-label">Semantic Fit</div>
-          <div class="signal-desc">Cosine sim: profile ↔ JD</div>
-        </div>
-        <div class="weight-bar-bg"><div class="weight-bar-fill" style="width:30%; background:#7c3aed;"></div></div>
-        <div class="weight-pct">15%</div>
-      </div>
-      <div class="weight-bar-row">
-        <div style="display:flex;flex-direction:column;">
-          <div class="weight-label">Education</div>
-          <div class="signal-desc">IIT/IISc → state engineering</div>
-        </div>
-        <div class="weight-bar-bg"><div class="weight-bar-fill" style="width:10%; background:#059669;"></div></div>
-        <div class="weight-pct">5%</div>
-      </div>
-    </div>
-
-    <div class="highlight-box">
-      Weight rationale: Skill Match dominates because the JD is highly specific (FAISS, Qdrant, Sentence Transformers, NDCG). Career Quality distinguishes candidates who have shipped AI systems vs. those who just list skills. Availability is third because a great candidate who won't respond is useless to a recruiter.
-    </div>
-
-  </div>
-  <div class="slide-num">5 / 10</div>
-</div>
-
-
-<!-- ═══════════════════════════════════════════════════════════════
-     SLIDE 6  —  KEY DECISIONS
-════════════════════════════════════════════════════════════════ -->
-<div class="slide">
-  <div class="slide-header">
-    <div class="slide-label">Key Design Decisions</div>
-    <div class="slide-title">Three non-obvious choices that<br>meaningfully improved ranking quality</div>
-  </div>
-  <div class="slide-body">
-    <div style="display:flex; flex-direction:column; gap:16px;">
-
-      <div class="card" style="border-left: 4px solid var(--red);">
-        <div class="card-title" style="font-size:14px;">🚫 Keyword Stuffer Penalty</div>
-        <div class="card-body">
-          <strong>Problem:</strong> A "Marketing Manager at Wipro" who lists every AI skill (FAISS, Qdrant, Transformers) was scoring 0.62 on skill match — above genuine ML engineers.<br><br>
-          <strong>Fix:</strong> If <code style="background:#f1f5f9;padding:1px 5px;border-radius:3px;">is_non_ai_title AND ai_role_months &lt; 12</code>, apply a <strong>0.40× multiplier</strong> on skill score. Score dropped from 0.62 → 0.25. Logic: skills without career evidence are aspirational, not demonstrated.
-        </div>
-      </div>
-
-      <div class="card" style="border-left: 4px solid var(--amber);">
-        <div class="card-title" style="font-size:14px;">🍯 Honeypot Detection</div>
-        <div class="card-body">
-          <strong>Problem:</strong> ~65 profiles are intentionally impossible (planted to catch cheaters who include all profiles or who don't validate data).<br><br>
-          <strong>Detection rules:</strong> career date math vs. duration_months differs by &gt;12 months; expert skill listed with 0 months experience; YoE &gt; 5 years beyond total career history; jobs overlapping by &gt;180 days; 5+ expert skills each used &lt;3 months. All 65 detected → excluded from final ranking.
-        </div>
-      </div>
-
-      <div class="card" style="border-left: 4px solid var(--blue);">
-        <div class="card-title" style="font-size:14px;">⚡ Full Sweep vs. FAISS Pre-filter</div>
-        <div class="card-body">
-          <strong>Initial design:</strong> FAISS retrieved top 10K by cosine similarity → score those 10K.<br><br>
-          <strong>Problem found:</strong> 5 legitimate AI engineers (AI Engineer at Zoho, NLP Engineer at InMobi…) had low semantic similarity despite strong rule-based scores and were missed entirely by FAISS.<br><br>
-          <strong>Fix:</strong> Score all 100K candidates directly. Scoring 100K takes 1.7s — FAISS saved nothing worth the recall loss. Full sweep = 100% recall.
-        </div>
-      </div>
-
-    </div>
-  </div>
-  <div class="slide-num">6 / 10</div>
-</div>
-
-
-<!-- ═══════════════════════════════════════════════════════════════
-     SLIDE 7  —  RESULTS — TOP 10
-════════════════════════════════════════════════════════════════ -->
-<div class="slide">
-  <div class="slide-header">
-    <div class="slide-label">Results</div>
-    <div class="slide-title">Top 10 ranked candidates —<br>all Senior AI / ML engineers at product companies</div>
-  </div>
-  <div class="slide-body">
     <table>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Title</th>
-          <th>Company</th>
-          <th>YoE</th>
-          <th>Score</th>
-          <th>Top Skills</th>
-          <th>Avail</th>
-        </tr>
-      </thead>
+      <thead><tr><th>#</th><th>Title</th><th>Company</th><th>YoE</th><th>Score</th><th>Key Skills</th><th>Status</th></tr></thead>
       <tbody>
-        <tr><td class="td-rank">1</td><td>Senior AI Engineer</td><td>Apple</td><td>5.9</td><td class="td-score">0.9287</td><td>FAISS, NLP, Python</td><td><span class="pill pill-green">Open</span></td></tr>
-        <tr><td class="td-rank">2</td><td>Staff ML Engineer</td><td>Paytm</td><td>7.0</td><td class="td-score">0.9276</td><td>Info Retrieval, LLMs, RAG</td><td><span class="pill pill-green">Open</span></td></tr>
-        <tr><td class="td-rank">3</td><td>AI Engineer</td><td>Microsoft</td><td>6.9</td><td class="td-score">0.9222</td><td>Vector Search, OpenSearch, ST</td><td><span class="pill pill-green">Open</span></td></tr>
-        <tr><td class="td-rank">4</td><td>AI Engineer</td><td>Google</td><td>7.3</td><td class="td-score">0.9213</td><td>Vector Search, HuggingFace, BM25</td><td><span class="pill pill-green">Open</span></td></tr>
-        <tr><td class="td-rank">5</td><td>Senior ML Engineer</td><td>Genpact AI</td><td>6.1</td><td class="td-score">0.9174</td><td>Sentence Transformers, Qdrant, NLP</td><td><span class="pill pill-green">Open</span></td></tr>
-        <tr><td class="td-rank">6</td><td>Search Engineer</td><td>Sarvam AI</td><td>7.6</td><td class="td-score">0.9170</td><td>Weaviate, RAG, Python</td><td><span class="pill pill-green">Open</span></td></tr>
-        <tr><td class="td-rank">7</td><td>AI Engineer</td><td>Mad Street Den</td><td>4.6</td><td class="td-score">0.9164</td><td>FAISS, Qdrant, Embeddings</td><td><span class="pill pill-green">Open</span></td></tr>
-        <tr><td class="td-rank">8</td><td>NLP Engineer</td><td>Aganitha</td><td>6.6</td><td class="td-score">0.9150</td><td>Python, Embeddings, LLMs</td><td><span class="pill pill-green">Open</span></td></tr>
-        <tr><td class="td-rank">9</td><td>Senior NLP Engineer</td><td>Niramai</td><td>7.8</td><td class="td-score">0.9124</td><td>OpenSearch, Embeddings, Weaviate</td><td><span class="pill pill-green">Open</span></td></tr>
-        <tr><td class="td-rank">10</td><td>Senior NLP Engineer</td><td>Salesforce</td><td>8.9</td><td class="td-score">0.9117</td><td>Pinecone, BM25, Elasticsearch</td><td><span class="pill pill-green">Open</span></td></tr>
+        <tr><td class="td-rank">1</td><td>Senior AI Engineer</td><td>Apple</td><td>5.9</td><td class="td-score">0.9287</td><td>FAISS, NLP, Python</td><td><span class="pill pill-green">Open · 30d</span></td></tr>
+        <tr><td class="td-rank">2</td><td>Staff ML Engineer</td><td>Paytm</td><td>7.0</td><td class="td-score">0.9276</td><td>Info Retrieval, LLMs, RAG</td><td><span class="pill pill-green">Open · 60d</span></td></tr>
+        <tr><td class="td-rank">3</td><td>AI Engineer</td><td>Microsoft</td><td>6.9</td><td class="td-score">0.9222</td><td>Vector Search, OpenSearch, ST</td><td><span class="pill pill-green">Open · 30d</span></td></tr>
+        <tr><td class="td-rank">4</td><td>AI Engineer</td><td>Google</td><td>7.3</td><td class="td-score">0.9213</td><td>Vector Search, HuggingFace, BM25</td><td><span class="pill pill-green">Open · 30d</span></td></tr>
+        <tr><td class="td-rank">5</td><td>Search Engineer</td><td>Sarvam AI</td><td>7.6</td><td class="td-score">0.9170</td><td>Weaviate, RAG, Python</td><td><span class="pill pill-green">Open · 45d</span></td></tr>
       </tbody>
     </table>
 
-    <div class="highlight-box" style="margin-top:4px;">
-      Zero consulting-only profiles in top 100. Zero non-AI titles. All candidates are actively open to work with ≤ 60 day notice. Scores non-increasing from 0.9287 → 0.8495.
+    <div class="hbox" style="margin-top:4px;">
+      Zero consulting-only profiles in top 100. Zero non-AI titles. All candidates open to work with ≤90d notice. Scores strictly non-increasing (0.9287 → 0.8495). Quick validation: <strong>PASSED</strong>.
     </div>
   </div>
-  <div class="slide-num">7 / 10</div>
+  <div class="footer-bar"></div>
 </div>
 
 
-<!-- ═══════════════════════════════════════════════════════════════
-     SLIDE 8  —  TIMING BREAKDOWN
-════════════════════════════════════════════════════════════════ -->
+<!-- ════════════════════════════════════
+     SLIDE 9  —  TECHNOLOGIES USED
+════════════════════════════════════ -->
 <div class="slide">
-  <div class="slide-header">
-    <div class="slide-label">Performance</div>
-    <div class="slide-title">29 seconds end-to-end on CPU —<br>10× under the 5-minute constraint</div>
-  </div>
-  <div class="slide-body">
-
-    <div class="two-col">
-      <div>
-        <div style="display:flex; flex-direction:column; gap:12px;">
-          <div style="display:flex; align-items:center; gap:12px; background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:14px 18px;">
-            <div style="font-size:22px; width:36px; text-align:center;">📂</div>
-            <div style="flex:1;">
-              <div style="font-size:13px; font-weight:700; color:var(--slate);">Load Artifacts</div>
-              <div style="font-size:11px; color:var(--muted);">100K features (JSONL) + embeddings matrix</div>
-            </div>
-            <div style="font-size:18px; font-weight:800; color:var(--blue);">3.7s</div>
-          </div>
-          <div style="display:flex; align-items:center; gap:12px; background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:14px 18px;">
-            <div style="font-size:22px; width:36px; text-align:center;">🧠</div>
-            <div style="flex:1;">
-              <div style="font-size:13px; font-weight:700; color:var(--slate);">Embed JD</div>
-              <div style="font-size:11px; color:var(--muted);">all-MiniLM-L6-v2, local model cache</div>
-            </div>
-            <div style="font-size:18px; font-weight:800; color:var(--blue);">10.2s</div>
-          </div>
-          <div style="display:flex; align-items:center; gap:12px; background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:14px 18px;">
-            <div style="font-size:22px; width:36px; text-align:center;">⚡</div>
-            <div style="flex:1;">
-              <div style="font-size:13px; font-weight:700; color:var(--slate);">Cosine Similarity (100K)</div>
-              <div style="font-size:11px; color:var(--muted);">Matrix multiply: (100K×384) @ (384×1)</div>
-            </div>
-            <div style="font-size:18px; font-weight:800; color:var(--green);">0.04s</div>
-          </div>
-          <div style="display:flex; align-items:center; gap:12px; background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:14px 18px;">
-            <div style="font-size:22px; width:36px; text-align:center;">🎯</div>
-            <div style="flex:1;">
-              <div style="font-size:13px; font-weight:700; color:var(--slate);">Score All Candidates</div>
-              <div style="font-size:11px; color:var(--muted);">5-signal scorer, 100K iterations</div>
-            </div>
-            <div style="font-size:18px; font-weight:800; color:var(--green);">1.7s</div>
-          </div>
-          <div style="display:flex; align-items:center; gap:12px; background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:14px 18px;">
-            <div style="font-size:22px; width:36px; text-align:center;">📝</div>
-            <div style="flex:1;">
-              <div style="font-size:13px; font-weight:700; color:var(--slate);">Generate Reasoning + Write CSV</div>
-              <div style="font-size:11px; color:var(--muted);">100 rows with recruiter reasoning</div>
-            </div>
-            <div style="font-size:18px; font-weight:800; color:var(--green);">0.3s</div>
-          </div>
-        </div>
+  <div class="nav">
+    <div class="nav-left">
+      <div class="logo-redrob">
+        <svg class="hex-icon" width="20" height="20" viewBox="0 0 26 26" fill="none">
+          <path d="M13 2L23.3923 8V20L13 26L2.60769 20V8L13 2Z" fill="white" opacity="0.85"/>
+          <path d="M13 6L19.9282 10V18L13 22L6.07179 18V10L13 6Z" fill="#0a0a0a"/>
+          <path d="M13 9L17.3301 11.5V16.5L13 19L8.66987 16.5V11.5L13 9Z" fill="white" opacity="0.75"/>
+        </svg>
+        redrob
       </div>
+      <div class="logo-divider"></div>
+      <div class="logo-h2s">H2S</div>
+    </div>
+    <div class="nav-india-runs">INDIA.RUNS</div>
+  </div>
 
-      <div style="display:flex; flex-direction:column; gap:16px;">
-        <div class="stat-card" style="flex:1;">
-          <div class="stat-num">29s</div>
-          <div class="stat-label">Total ranking time (CPU, no GPU)</div>
-        </div>
-        <div class="stat-card green" style="flex:1;">
-          <div class="stat-num">10×</div>
-          <div class="stat-label">Under the 5-minute constraint</div>
-        </div>
-        <div class="stat-card slate" style="flex:1;">
-          <div class="stat-num">~400MB</div>
-          <div class="stat-label">Artifacts disk usage (within 5GB limit)</div>
-        </div>
-        <div class="card" style="border-left:4px solid var(--blue);">
-          <div class="card-title">Why features.jsonl instead of pickle?</div>
-          <div class="card-body">Pickle on a 357MB list-of-dicts took <strong>93 minutes</strong> to deserialize. JSONL line-by-line loads the same data in <strong>3.7 seconds</strong>. Critical fix.</div>
+  <div class="body">
+    <div class="slide-title">Technologies Used</div>
+    <div class="three-col" style="flex:1;">
+      <div class="card">
+        <div class="card-head">🧠 sentence-transformers</div>
+        <div class="card-body"><strong>all-MiniLM-L6-v2</strong> — 22M params, 384-dim. Chosen because it runs on CPU in ~10s for a single JD embedding and produces strong semantic representations for technical English text. No GPU required at inference time.</div>
+      </div>
+      <div class="card">
+        <div class="card-head">⚡ NumPy matrix multiply</div>
+        <div class="card-body">Replaces FAISS entirely at query time. Embeddings are L2-normalised at precompute → dot product = cosine similarity. <strong>(100K×384) @ (384×1) in 0.04s</strong>. Eliminates recall loss from approximate nearest-neighbour pre-filtering.</div>
+      </div>
+      <div class="card">
+        <div class="card-head">📄 JSONL feature store</div>
+        <div class="card-body">Line-delimited JSON vs Python pickle. 100K feature dicts load in <strong>3.7 seconds</strong> vs 93 minutes for pickle. Human-readable, no serialisation overhead, portable across Python versions.</div>
+      </div>
+      <div class="card">
+        <div class="card-head">🔍 rapidfuzz</div>
+        <div class="card-body">Fuzzy partial-ratio matching for skill name normalisation. Catches variations: "HuggingFace" vs "Hugging Face Transformers", "Open Search" vs "OpenSearch", "sentence transformers" vs "Sentence-BERT". Critical for fair skill scoring.</div>
+      </div>
+      <div class="card">
+        <div class="card-head">🖥 Gradio + HuggingFace Spaces</div>
+        <div class="card-body">Interactive demo — paste any JD, adjust weight sliders, see top candidates ranked in ~15s. Deployed on CPU Basic (free tier). Top-1000 candidate features + embeddings shipped as 4 MB artifacts. No proprietary APIs.</div>
+      </div>
+      <div class="card">
+        <div class="card-head">🐍 Python 3.13 stack</div>
+        <div class="card-body">
+          <span class="pill pill-purple">pandas</span>&nbsp;
+          <span class="pill pill-purple">scikit-learn</span>&nbsp;
+          <span class="pill pill-purple">tqdm</span>&nbsp;
+          <span class="pill pill-purple">faiss-cpu</span><br><br>
+          No cloud APIs. No LLMs. Fully reproducible with <code style="font-size:11px;background:#f1f5f9;padding:1px 4px;border-radius:3px;">pip install -r requirements.txt</code>
         </div>
       </div>
     </div>
-
   </div>
-  <div class="slide-num">8 / 10</div>
+  <div class="footer-bar"></div>
 </div>
 
 
-<!-- ═══════════════════════════════════════════════════════════════
-     SLIDE 9  —  TECH STACK
-════════════════════════════════════════════════════════════════ -->
+<!-- ════════════════════════════════════
+     SLIDE 10  —  SUBMISSION ASSETS
+════════════════════════════════════ -->
 <div class="slide">
-  <div class="slide-header">
-    <div class="slide-label">Tech Stack</div>
-    <div class="slide-title">Minimal, fast, reproducible —<br>no proprietary APIs or cloud dependencies</div>
+  <div class="nav">
+    <div class="nav-left">
+      <div class="logo-redrob">
+        <svg class="hex-icon" width="20" height="20" viewBox="0 0 26 26" fill="none">
+          <path d="M13 2L23.3923 8V20L13 26L2.60769 20V8L13 2Z" fill="white" opacity="0.85"/>
+          <path d="M13 6L19.9282 10V18L13 22L6.07179 18V10L13 6Z" fill="#0a0a0a"/>
+          <path d="M13 9L17.3301 11.5V16.5L13 19L8.66987 16.5V11.5L13 9Z" fill="white" opacity="0.75"/>
+        </svg>
+        redrob
+      </div>
+      <div class="logo-divider"></div>
+      <div class="logo-h2s">H2S</div>
+    </div>
+    <div class="nav-india-runs">INDIA.RUNS</div>
   </div>
-  <div class="slide-body">
-    <div class="three-col">
-      <div class="card">
-        <div class="card-title">🧠 Embeddings</div>
-        <div class="card-body">
-          <strong>all-MiniLM-L6-v2</strong><br>
-          22M parameters, 384-dim output, fast CPU inference. Chosen over larger models for the 5-min constraint while retaining strong semantic quality for technical text.
+
+  <div class="body">
+    <div class="slide-title">Submission Assets</div>
+    <div class="two-col" style="flex:1; align-items:start;">
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div class="card" style="border-left:3px solid #4f46e5;">
+          <div class="card-head">📁 GitHub Repository</div>
+          <div class="card-body" style="font-size:13px;">
+            <strong>github.com/Drishti84/-redrob_ranker</strong><br><br>
+            Contains: precompute.py · rank.py · features.py · scorer.py · reasoning.py · honeypot.py · requirements.txt · submission.csv · submission_metadata.yaml · RULES_AND_CONSTRAINTS.md · WORKFLOW.md
+          </div>
+        </div>
+        <div class="card" style="border-left:3px solid #0891b2;">
+          <div class="card-head">🤗 Live Demo — HuggingFace Spaces</div>
+          <div class="card-body" style="font-size:13px;">
+            <strong>huggingface.co/spaces/Drishti84/redrob-ranker</strong><br><br>
+            Interactive Gradio app. Paste any JD → ranked candidates in ~15s. Adjustable scoring weights. Shows top-25 table + full reasoning for top 10.
+          </div>
         </div>
       </div>
-      <div class="card">
-        <div class="card-title">🔢 Similarity</div>
-        <div class="card-body">
-          <strong>NumPy matrix multiply</strong><br>
-          Embeddings L2-normalised at precompute time → dot product = cosine similarity. (100K×384) @ (384×1) in 0.04s. No FAISS needed at query time.
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div class="card" style="border-left:3px solid #059669;">
+          <div class="card-head">📊 submission.csv</div>
+          <div class="card-body" style="font-size:13px;">
+            100 ranked candidates · columns: candidate_id, rank, score, reasoning<br><br>
+            Scores: 0.9287 (rank 1) → 0.8495 (rank 100) · non-increasing ✓<br>
+            Quick validation: PASSED ✓ · No honeypots in top 100 ✓
+          </div>
         </div>
-      </div>
-      <div class="card">
-        <div class="card-title">⚡ Feature Store</div>
-        <div class="card-body">
-          <strong>JSONL (line-delimited JSON)</strong><br>
-          246MB. Loads 100K feature dicts in 3.7s vs 93 minutes for pickle. Standard, human-readable, no serialisation overhead.
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-title">🔍 Fuzzy Matching</div>
-        <div class="card-body">
-          <strong>rapidfuzz</strong><br>
-          Partial ratio matching for skill names. Catches "HuggingFace" vs "Hugging Face Transformers", "Open Search" vs "OpenSearch" etc.
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-title">🖥️ Demo App</div>
-        <div class="card-body">
-          <strong>Gradio 4</strong> on HuggingFace Spaces<br>
-          JD text input, adjustable weight sliders, ranked table + Top-10 full reasoning. Deployed at HF Spaces (CPU Basic, free tier).
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-title">📦 Dependencies</div>
-        <div class="card-body">
-          <code style="font-family:monospace; font-size:11px; line-height:1.8;">
-            sentence-transformers<br>
-            numpy · pandas<br>
-            scikit-learn<br>
-            rapidfuzz · tqdm
-          </code>
+        <div class="card" style="border-left:3px solid #d97706;">
+          <div class="card-head">⚙️ Reproduce command</div>
+          <div class="card-body">
+            <div class="code" style="font-size:11.5px;padding:10px 14px;">
+              <span class="cm"># Step 1 — precompute (once)</span><br>
+              python precompute.py \<br>
+              &nbsp;&nbsp;--candidates ./candidates.jsonl \<br>
+              &nbsp;&nbsp;--out ./artifacts<br><br>
+              <span class="cm"># Step 2 — rank (29 seconds)</span><br>
+              python rank.py \<br>
+              &nbsp;&nbsp;--candidates ./candidates.jsonl \<br>
+              &nbsp;&nbsp;--out ./submission.csv
+            </div>
+          </div>
         </div>
       </div>
     </div>
-
-    <div class="code" style="margin-top:4px;">
-      <span class="cm"># One command to reproduce</span><br>
-      python precompute.py <span class="str">--candidates</span> ./candidates.jsonl <span class="str">--out</span> ./artifacts<br>
-      python rank.py <span class="str">--candidates</span> ./candidates.jsonl <span class="str">--out</span> ./submission.csv
-    </div>
-
   </div>
-  <div class="slide-num">9 / 10</div>
+  <div class="footer-bar"></div>
 </div>
 
 
-<!-- ═══════════════════════════════════════════════════════════════
-     SLIDE 10  —  CLOSING
-════════════════════════════════════════════════════════════════ -->
-<div class="slide" style="background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 60%, #1d4ed8 100%);">
-  <div style="padding: 64px 72px; display:flex; flex-direction:column; justify-content:space-between; height:100%; color:white;">
-    <div style="color:#60a5fa; font-size:12px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;">Summary</div>
-
-    <div>
-      <div style="font-size:38px; font-weight:800; letter-spacing:-1px; line-height:1.1; margin-bottom:24px;">
-        What makes this ranker<br><span style="color:#60a5fa;">actually good</span>
+<!-- ════════════════════════════════════
+     SLIDE 11  —  THANK YOU
+════════════════════════════════════ -->
+<div class="slide aurora-bg">
+  <div class="ty-inner">
+    <div class="cover-logos">
+      <div class="cover-logo-redrob">
+        <svg width="28" height="28" viewBox="0 0 26 26" fill="none">
+          <path d="M13 2L23.3923 8V20L13 26L2.60769 20V8L13 2Z" fill="#ffffff" opacity="0.9"/>
+          <path d="M13 6L19.9282 10V18L13 22L6.07179 18V10L13 6Z" fill="#0a0a0a"/>
+          <path d="M13 9L17.3301 11.5V16.5L13 19L8.66987 16.5V11.5L13 9Z" fill="white" opacity="0.8"/>
+        </svg>
+        redrob
       </div>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
-        <div style="background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.12); border-radius:10px; padding:18px 20px;">
-          <div style="font-size:20px; margin-bottom:8px;">🎯</div>
-          <div style="font-weight:700; margin-bottom:4px;">Skill evidence, not lists</div>
-          <div style="font-size:13px; color:#94a3b8;">Proficiency + duration + endorsements. A 2-month beginner in FAISS scores far lower than a 3-year expert.</div>
-        </div>
-        <div style="background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.12); border-radius:10px; padding:18px 20px;">
-          <div style="font-size:20px; margin-bottom:8px;">🏭</div>
-          <div style="font-weight:700; margin-bottom:4px;">Career trajectory matters</div>
-          <div style="font-size:13px; color:#94a3b8;">Product company AI experience outweighs consulting firm résumés. Title chasers and non-AI titles penalised.</div>
-        </div>
-        <div style="background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.12); border-radius:10px; padding:18px 20px;">
-          <div style="font-size:20px; margin-bottom:8px;">📞</div>
-          <div style="font-weight:700; margin-bottom:4px;">Hireability signals</div>
-          <div style="font-size:13px; color:#94a3b8;">A perfect candidate who won't respond is worthless. Response rate, notice period, and active status are first-class signals.</div>
-        </div>
-        <div style="background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.12); border-radius:10px; padding:18px 20px;">
-          <div style="font-size:20px; margin-bottom:8px;">🍯</div>
-          <div style="font-weight:700; margin-bottom:4px;">Trap-aware</div>
-          <div style="font-size:13px; color:#94a3b8;">65 honeypot profiles detected and removed. Keyword stuffers caught via career-evidence penalty. Ranking is robust.</div>
-        </div>
-      </div>
+      <div class="cover-logo-divider"></div>
+      <div class="cover-logo-h2s">H2S</div>
     </div>
-
-    <div style="display:flex; gap:40px; padding-top:16px; border-top:1px solid rgba(255,255,255,0.1);">
-      <div>
-        <div style="font-size:11px; color:#64748b; font-weight:700; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:4px;">Demo</div>
-        <div style="color:#93c5fd; font-size:13px; font-weight:600;">huggingface.co/spaces/Drishti84/redrob-ranker</div>
-      </div>
-      <div>
-        <div style="font-size:11px; color:#64748b; font-weight:700; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:4px;">Code</div>
-        <div style="color:#93c5fd; font-size:13px; font-weight:600;">github.com/Drishti84/-redrob_ranker</div>
-      </div>
-      <div>
-        <div style="font-size:11px; color:#64748b; font-weight:700; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:4px;">Contact</div>
-        <div style="color:#93c5fd; font-size:13px; font-weight:600;">ddrishti_be23@thapar.edu · +91-8556080258</div>
-      </div>
-    </div>
+    <div class="ty-india-runs">INDIA.RUNS</div>
+    <div class="cover-tagline-pill">Build what next India runs on</div>
+    <div class="ty-text">THANK <span>YOU</span></div>
   </div>
-  <div class="slide-num" style="color:#475569;">10 / 10</div>
+  <div class="footer-bar"></div>
 </div>
 
 </body>
