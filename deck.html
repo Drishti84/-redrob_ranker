@@ -342,9 +342,29 @@ tr:nth-child(even) td { background: #f8fafc; }
 /* ── SVG logo helper ── */
 .hex-icon { display:inline-block; }
 
+@page {
+  size: 1120px 630px;
+  margin: 0;
+}
 @media print {
-  body { background: white; }
-  .slide { margin: 0; box-shadow: none; page-break-after: always; }
+  html, body { margin: 0; padding: 0; background: white; width: 1120px; }
+  .slide {
+    margin: 0 !important;
+    box-shadow: none;
+    page-break-after: always;
+    break-after: page;
+    width: 1120px !important;
+    height: 630px !important;
+    overflow: hidden;
+  }
+  /* Fix gradient text (INDIA.RUNS in nav) — replace with solid color for print */
+  .nav-india-runs {
+    background: none !important;
+    -webkit-background-clip: unset !important;
+    -webkit-text-fill-color: #c4b5fd !important;
+    background-clip: unset !important;
+    color: #c4b5fd !important;
+  }
 }
 </style>
 </head>
