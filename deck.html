@@ -2,11 +2,15 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Redrob — Intelligent Candidate Ranker</title>
+<title>Redrob: Intelligent Candidate Ranker</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after {
+  box-sizing: border-box; margin: 0; padding: 0;
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
+}
 
 body {
   font-family: 'Inter', system-ui, sans-serif;
@@ -33,6 +37,8 @@ body {
     radial-gradient(ellipse 45% 70% at 80% 40%, rgba(124, 58, 237, 0.7) 0%, transparent 60%),
     radial-gradient(ellipse 60% 50% at 50% 100%, rgba(99, 14, 160, 0.5) 0%, transparent 60%),
     #0d0a1f;
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
 }
 
 /* ── HEADER BAR (content slides) ── */
@@ -44,6 +50,8 @@ body {
   justify-content: space-between;
   padding: 0 36px;
   flex-shrink: 0;
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
 }
 
 .nav-left {
@@ -106,6 +114,8 @@ body {
   background: linear-gradient(90deg, #2563eb 0%, #4f46e5 50%, #7c3aed 100%);
   flex-shrink: 0;
   margin-top: auto;
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
 }
 
 /* ── CONTENT AREA ── */
@@ -229,6 +239,8 @@ body {
 .stat {
   background: linear-gradient(135deg, #1d4ed8, #4f46e5);
   border-radius: 8px; padding: 16px 18px; color: white;
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
 }
 .stat.green  { background: linear-gradient(135deg, #065f46, #059669); }
 .stat.orange { background: linear-gradient(135deg, #92400e, #d97706); }
@@ -257,7 +269,8 @@ body {
 /* Table */
 table { width: 100%; border-collapse: collapse; font-size: 12px; }
 th { background: #0f172a; color: white; padding: 8px 12px; text-align: left;
-     font-size: 10.5px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; }
+     font-size: 10.5px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase;
+     -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
 th:first-child { border-radius: 5px 0 0 5px; }
 th:last-child  { border-radius: 0 5px 5px 0; }
 td { padding: 7px 12px; border-bottom: 1px solid #f1f5f9; color: #334155; }
@@ -283,6 +296,8 @@ tr:nth-child(even) td { background: #f8fafc; }
   font-family: 'Courier New', monospace;
   font-size: 12px; background: #0f172a; color: #e2e8f0;
   border-radius: 7px; padding: 14px 18px; line-height: 1.7;
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
 }
 .kw { color: #818cf8; } .str { color: #86efac; } .cm { color: #475569; }
 
@@ -295,7 +310,11 @@ tr:nth-child(even) td { background: #f8fafc; }
 .pill-green  { background: #d1fae5; color: #065f46; }
 
 /* Arch boxes */
-.arch-phase { background: #0f172a; border-radius: 9px; padding: 16px 20px; }
+.arch-phase {
+  background: #0f172a; border-radius: 9px; padding: 16px 20px;
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
+}
 .arch-phase-label {
   font-size: 10px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;
   color: #64748b; margin-bottom: 12px;
@@ -355,7 +374,7 @@ tr:nth-child(even) td { background: #f8fafc; }
   <div class="cover-fields">
     <div class="cover-field">Team Name : <span>redrob-ranker</span></div>
     <div class="cover-field">Team Leader Name : <span>Drishti</span></div>
-    <div class="cover-field">Problem Statement : <span>Intelligent Candidate Discovery &amp; Ranking — build an AI system that ranks 100,000 candidates for a Senior AI Engineer role the way a great recruiter would, using skill evidence, career trajectory, and behavioral availability signals.</span></div>
+    <div class="cover-field">Problem Statement : <span>Build an AI system that ranks 100,000 candidates for a Senior AI Engineer role the way a great recruiter would. No keyword shortcuts. Real skill depth, career history, and availability signals that actually matter.</span></div>
   </div>
   <div class="footer-bar"></div>
 </div>
@@ -386,11 +405,11 @@ tr:nth-child(even) td { background: #f8fafc; }
     <div class="bullets">
       <div class="bullet">
         <div class="dot"></div>
-        <div class="bullet-text"><strong>Proposed solution:</strong> A two-phase hybrid ranker. Phase 1 (offline) pre-computes sentence embeddings and extracts 30+ structured signals for all 100,000 candidates. Phase 2 (online) embeds the JD locally, computes cosine similarities via a single matrix multiply, scores all candidates with a 5-signal weighted scorer, and produces the ranked top-100 CSV — all in 29 seconds on CPU with zero network calls.</div>
+        <div class="bullet-text"><strong>What we built:</strong> A two-phase ranker that splits the heavy work from the fast work. Before evaluation day, we precompute sentence embeddings and extract 30+ structured signals for all 100,000 candidates. At ranking time, we embed the JD locally, run a single matrix multiply to get cosine similarities across all 100K profiles, pass everything through a 5-signal weighted scorer, and write the final CSV. The whole online phase takes 29 seconds on a regular CPU with no network calls.</div>
       </div>
       <div class="bullet">
         <div class="dot"></div>
-        <div class="bullet-text"><strong>What differentiates this from traditional matching:</strong> Traditional systems match keywords — a candidate who lists "FAISS" scores the same whether they used it for 2 months as a beginner or 3 years in production. Our scorer weights each skill by <strong>proficiency × duration × endorsements</strong>. Career quality distinguishes product-company AI engineers from consulting-only profiles or keyword stuffers (0.40× penalty). A dedicated <strong>availability score</strong> from 23 behavioral platform signals ensures we surface candidates who will actually respond and join. Honeypot detection removes ~65 impossible profiles. No LLMs involved — every signal is structured and auditable.</div>
+        <div class="bullet-text"><strong>Why this is different from keyword matching:</strong> Traditional systems treat "FAISS" on a resume as a binary hit whether the person used it for 2 months as an intern or 3 years in a production retrieval system. Our scorer weights every skill by <strong>proficiency × duration × endorsements</strong>. We separately track how long someone has actually worked in AI roles (not just listed skills). We use 23 platform signals to check if they will actually respond and join. We apply a 0.40x penalty to profiles that clearly stuffed keywords onto a non-AI career. And we filter out around 65 profiles with impossible career timelines before scoring even starts. Every signal is structured and explainable.</div>
       </div>
     </div>
   </div>
@@ -422,23 +441,23 @@ tr:nth-child(even) td { background: #f8fafc; }
     <div class="slide-title">JD Understanding &amp; Candidate Evaluation</div>
     <div class="two-col" style="flex:1;">
       <div>
-        <div style="font-size:14px;font-weight:700;color:#0f172a;margin-bottom:10px;">Key requirements extracted from the JD</div>
+        <div style="font-size:14px;font-weight:700;color:#0f172a;margin-bottom:10px;">What we pulled out of the JD</div>
         <div class="bullets">
-          <div class="bullet"><div class="dot"></div><div class="bullet-text"><strong>Experience:</strong> 5–9 years, product company scale, shipped to real users</div></div>
+          <div class="bullet"><div class="dot"></div><div class="bullet-text"><strong>Experience:</strong> 5 to 9 years, product company scale, shipped to real users</div></div>
           <div class="bullet"><div class="dot"></div><div class="bullet-text"><strong>Vector search:</strong> Pinecone, Weaviate, Qdrant, Milvus, OpenSearch, Elasticsearch, FAISS</div></div>
-          <div class="bullet"><div class="dot"></div><div class="bullet-text"><strong>Embeddings:</strong> sentence-transformers, BGE, E5, OpenAI embeddings in production</div></div>
-          <div class="bullet"><div class="dot"></div><div class="bullet-text"><strong>Evaluation:</strong> NDCG, MRR, MAP, A/B testing — not just building, but measuring</div></div>
-          <div class="bullet"><div class="dot"></div><div class="bullet-text"><strong>LLM fine-tuning:</strong> LoRA, QLoRA, PEFT or learning-to-rank (XGBoost, LambdaRank)</div></div>
-          <div class="bullet"><div class="dot"></div><div class="bullet-text"><strong>Location:</strong> India, Pune/Noida, hybrid — availability signals matter</div></div>
+          <div class="bullet"><div class="dot"></div><div class="bullet-text"><strong>Embeddings:</strong> sentence-transformers, BGE, E5, OpenAI embeddings used in production</div></div>
+          <div class="bullet"><div class="dot"></div><div class="bullet-text"><strong>Evaluation:</strong> NDCG, MRR, MAP, A/B testing. Not just building pipelines but actually measuring them</div></div>
+          <div class="bullet"><div class="dot"></div><div class="bullet-text"><strong>LLM fine-tuning:</strong> LoRA, QLoRA, PEFT or learning-to-rank methods like XGBoost and LambdaRank</div></div>
+          <div class="bullet"><div class="dot"></div><div class="bullet-text"><strong>Location:</strong> India, Pune or Noida preferred, open to hybrid. Availability signals matter here</div></div>
         </div>
       </div>
       <div>
-        <div style="font-size:14px;font-weight:700;color:#0f172a;margin-bottom:10px;">Beyond keyword matching — how we evaluate fit</div>
+        <div style="font-size:14px;font-weight:700;color:#0f172a;margin-bottom:10px;">How we go deeper than keyword matching</div>
         <div class="bullets">
-          <div class="bullet"><div class="dot"></div><div class="bullet-text"><strong>Skill depth:</strong> Each skill hit scored by proficiency (beginner 0.4× → expert 1.0×), duration (0–6 mo: 0.5×, 24+ mo: 1.0×), and endorsement count (+20% max)</div></div>
-          <div class="bullet"><div class="dot"></div><div class="bullet-text"><strong>Career evidence:</strong> ai_role_months measures how long they've actually worked in AI titles — separate from skills they claim to have</div></div>
-          <div class="bullet"><div class="dot"></div><div class="bullet-text"><strong>Semantic similarity:</strong> Cosine distance between the full JD text and the candidate's profile text (all-MiniLM-L6-v2, 384-dim)</div></div>
-          <div class="bullet"><div class="dot"></div><div class="bullet-text"><strong>Hireability:</strong> 23 platform signals — open_to_work, notice_days, response_rate, interview_rate, github_score, days_since_active</div></div>
+          <div class="bullet"><div class="dot"></div><div class="bullet-text"><strong>Skill depth:</strong> Each skill match is scored by proficiency (beginner 0.4x up to expert 1.0x), how long they used it (under 6 months gets 0.5x, over 24 months gets full credit), and endorsement count adding up to 20% on top</div></div>
+          <div class="bullet"><div class="dot"></div><div class="bullet-text"><strong>Career evidence:</strong> We track ai_role_months separately from listed skills. Someone can claim FAISS but if they never held an AI title we see that</div></div>
+          <div class="bullet"><div class="dot"></div><div class="bullet-text"><strong>Semantic similarity:</strong> We embed the full JD and the full profile text and compute cosine distance using all-MiniLM-L6-v2 at 384 dimensions</div></div>
+          <div class="bullet"><div class="dot"></div><div class="bullet-text"><strong>Hireability:</strong> 23 platform signals including open to work status, notice period, response rate, interview rate, GitHub score, and days since last active</div></div>
         </div>
       </div>
     </div>
@@ -473,21 +492,21 @@ tr:nth-child(even) td { background: #f8fafc; }
     <div class="bullets" style="margin-bottom:2px;">
       <div class="bullet">
         <div class="dot"></div>
-        <div class="bullet-text"><strong>Retrieve:</strong> All 100K candidates are embedded offline with <code style="background:#f1f5f9;padding:1px 5px;border-radius:3px;font-size:12px;">all-MiniLM-L6-v2</code> (384-dim, L2-normalised). At rank time the JD is embedded locally → single matrix multiply <code style="background:#f1f5f9;padding:1px 5px;border-radius:3px;font-size:12px;">(100K×384) @ (384×1)</code> gives cosine similarities for all 100K in <strong>0.04 seconds</strong>. No FAISS pre-filter — full sweep eliminates recall loss.</div>
+        <div class="bullet-text"><strong>Retrieve:</strong> All 100K candidates are embedded offline with <code style="background:#f1f5f9;padding:1px 5px;border-radius:3px;font-size:12px;">all-MiniLM-L6-v2</code> (384-dim, L2-normalised). At rank time we embed the JD locally and run a single matrix multiply: <code style="background:#f1f5f9;padding:1px 5px;border-radius:3px;font-size:12px;">(100K x 384) @ (384x1)</code> gives cosine similarities for every candidate in <strong>0.04 seconds</strong>. We skipped FAISS entirely. A pre-filter would have cut recall and missed candidates who deserved to be in the top 100.</div>
       </div>
       <div class="bullet">
         <div class="dot"></div>
-        <div class="bullet-text"><strong>Models &amp; algorithms:</strong> sentence-transformers for embeddings. Weighted linear combination of 5 hand-crafted, interpretable signal functions. rapidfuzz for fuzzy skill name matching (catches "HuggingFace" vs "Hugging Face Transformers"). No black-box models.</div>
+        <div class="bullet-text"><strong>Models and algorithms:</strong> sentence-transformers for embeddings, a weighted linear combination of 5 hand-crafted signal functions for scoring, and rapidfuzz for fuzzy skill name matching so that "HuggingFace" and "Hugging Face Transformers" are treated as the same thing. No black-box models anywhere in the pipeline.</div>
       </div>
     </div>
 
     <div style="margin-top:2px;">
-      <div style="font-size:13px;font-weight:700;color:#0f172a;margin-bottom:8px;">How signals combine → final score</div>
-      <div class="wbar-row"><div class="wbar-label">Skill Match</div><div class="wbar-bg"><div class="wbar-fill" style="width:70%;background:#4f46e5;"></div></div><div class="wbar-pct">35%</div><div style="font-size:11px;color:#64748b;padding-left:10px;width:280px;">JD required skill coverage × avg proficiency/duration weight</div></div>
-      <div class="wbar-row"><div class="wbar-label">Career Quality</div><div class="wbar-bg"><div class="wbar-fill" style="width:50%;background:#2563eb;"></div></div><div class="wbar-pct">25%</div><div style="font-size:11px;color:#64748b;padding-left:10px;width:280px;">AI role months, product company, title alignment, tenure stability</div></div>
-      <div class="wbar-row"><div class="wbar-label">Availability</div><div class="wbar-bg"><div class="wbar-fill" style="width:40%;background:#0891b2;"></div></div><div class="wbar-pct">20%</div><div style="font-size:11px;color:#64748b;padding-left:10px;width:280px;">open_to_work, notice days, response rate, location, recency</div></div>
-      <div class="wbar-row"><div class="wbar-label">Semantic Fit</div><div class="wbar-bg"><div class="wbar-fill" style="width:30%;background:#7c3aed;"></div></div><div class="wbar-pct">15%</div><div style="font-size:11px;color:#64748b;padding-left:10px;width:280px;">Cosine similarity: candidate profile text ↔ JD embedding</div></div>
-      <div class="wbar-row"><div class="wbar-label">Education</div><div class="wbar-bg"><div class="wbar-fill" style="width:10%;background:#059669;"></div></div><div class="wbar-pct">5%</div><div style="font-size:11px;color:#64748b;padding-left:10px;width:280px;">4-tier: IIT/IISc (1.0) → BITS (0.9) → state eng (0.45) → other</div></div>
+      <div style="font-size:13px;font-weight:700;color:#0f172a;margin-bottom:8px;">How the five signals combine into a final score</div>
+      <div class="wbar-row"><div class="wbar-label">Skill Match</div><div class="wbar-bg"><div class="wbar-fill" style="width:70%;background:#4f46e5;"></div></div><div class="wbar-pct">35%</div><div style="font-size:11px;color:#64748b;padding-left:10px;width:280px;">JD required skill coverage weighted by proficiency and how long they used it</div></div>
+      <div class="wbar-row"><div class="wbar-label">Career Quality</div><div class="wbar-bg"><div class="wbar-fill" style="width:50%;background:#2563eb;"></div></div><div class="wbar-pct">25%</div><div style="font-size:11px;color:#64748b;padding-left:10px;width:280px;">Months in actual AI roles, product company background, title and tenure patterns</div></div>
+      <div class="wbar-row"><div class="wbar-label">Availability</div><div class="wbar-bg"><div class="wbar-fill" style="width:40%;background:#0891b2;"></div></div><div class="wbar-pct">20%</div><div style="font-size:11px;color:#64748b;padding-left:10px;width:280px;">Open to work, notice period, response rate, location match, how recently active</div></div>
+      <div class="wbar-row"><div class="wbar-label">Semantic Fit</div><div class="wbar-bg"><div class="wbar-fill" style="width:30%;background:#7c3aed;"></div></div><div class="wbar-pct">15%</div><div style="font-size:11px;color:#64748b;padding-left:10px;width:280px;">Cosine similarity between the candidate profile text and the JD embedding</div></div>
+      <div class="wbar-row"><div class="wbar-label">Education</div><div class="wbar-bg"><div class="wbar-fill" style="width:10%;background:#059669;"></div></div><div class="wbar-pct">5%</div><div style="font-size:11px;color:#64748b;padding-left:10px;width:280px;">4 tiers: IIT/IISc (1.0), BITS (0.9), state engineering (0.45), other (0.20)</div></div>
     </div>
   </div>
   <div class="footer-bar"></div>
@@ -519,15 +538,15 @@ tr:nth-child(even) td { background: #f8fafc; }
     <div class="bullets">
       <div class="bullet">
         <div class="dot"></div>
-        <div class="bullet-text"><strong>How ranking decisions are explained:</strong> Every candidate in the top-100 gets a fact-grounded recruiter-style reasoning string generated from extracted structured features — not from an LLM. Example: <em>"Senior AI Engineer at Apple with 5.9 yrs experience; 5+ yrs in AI/ML roles including FAISS, NLP, Python. open to work, 30d notice, high recruiter response rate (80%), India-based, active GitHub (score 97), tier 1 institution."</em> Language is rank-calibrated: ranks 1–10 are assertive, ranks 31–100 include honest concerns (e.g. long notice period, outside India).</div>
+        <div class="bullet-text"><strong>How we explain every ranking decision:</strong> Each candidate in the top 100 gets a recruiter-style reasoning note built entirely from structured features, no LLM involved. For example: <em>"Senior AI Engineer at Apple with 5.9 years of experience, 5+ years in AI and ML roles, covers FAISS, NLP, and Python. Open to work, 30-day notice, 80% recruiter response rate, India-based, active GitHub score of 97, tier 1 institution."</em> The tone adjusts by rank. Top 10 reads confidently. From rank 31 onwards we include honest flags like a long notice period or location outside India.</div>
       </div>
       <div class="bullet">
         <div class="dot"></div>
-        <div class="bullet-text"><strong>No hallucinations or unsupported justifications:</strong> Zero LLM calls during ranking. Every fact in the reasoning — title, company, YoE, skill names, availability status — is read directly from the structured feature dict extracted at precompute time. "FAISS" appears in reasoning only if it exists in the candidate's skill list with duration &gt; 0 months. No generation, no inference.</div>
+        <div class="bullet-text"><strong>Zero hallucinations:</strong> We make zero LLM calls during ranking. Every fact in the reasoning note (title, company, years of experience, skill names, availability) comes directly from the structured feature dictionary we extracted at precompute time. If "FAISS" shows up in the reasoning, it means that skill exists in the candidate's skill list with more than zero months of usage. Nothing is generated or inferred.</div>
       </div>
       <div class="bullet">
         <div class="dot"></div>
-        <div class="bullet-text"><strong>Inconsistent, low-quality, and suspicious profiles:</strong> <strong>Honeypot detection</strong> (5 rules): career date math vs duration_months differs &gt;12 months; expert skill with 0 months used; YoE &gt;5 years beyond total career history; job overlap &gt;180 days; 5+ expert/advanced skills each used &lt;3 months — <strong>65 profiles flagged and excluded</strong>. <strong>Keyword stuffer penalty:</strong> non-AI current title (Marketing Manager, Civil Engineer…) + &lt;12 months AI work history → <strong>0.40× skill score multiplier</strong>. Profile completeness and verification status feed directly into availability score.</div>
+        <div class="bullet-text"><strong>Catching bad data before it reaches scoring:</strong> Our honeypot detector runs 5 checks: career date arithmetic that is off by more than 12 months, an expert-level skill listed with zero months used, years of experience that exceed the sum of all role durations by more than 5 years, job overlaps longer than 180 days, and five or more expert skills each with under 3 months of use. <strong>65 profiles were flagged and excluded.</strong> On top of that, profiles with a non-AI job title and under 12 months of AI work history receive a <strong>0.40x multiplier on their skill score</strong> to push keyword stuffers down the ranking.</div>
       </div>
     </div>
   </div>
@@ -559,7 +578,7 @@ tr:nth-child(even) td { background: #f8fafc; }
     <div class="slide-title">End-to-End Workflow</div>
 
     <div class="arch-phase" style="margin-bottom:10px;">
-      <div class="arch-phase-label" style="color:#94a3b8;">⏱ Phase 1 — Offline Precompute (runs once, before evaluation)</div>
+      <div class="arch-phase-label" style="color:#94a3b8;">⏱ Phase 1: Offline Precompute — runs once before evaluation day</div>
       <div class="flow">
         <div class="fstep" style="background:#1e293b;border-color:#334155;">
           <div class="fstep-icon">📄</div>
@@ -588,7 +607,7 @@ tr:nth-child(even) td { background: #f8fafc; }
     </div>
 
     <div class="arch-phase">
-      <div class="arch-phase-label" style="color:#94a3b8;">⚡ Phase 2 — Online Ranking (29 seconds · CPU only · no network)</div>
+      <div class="arch-phase-label" style="color:#94a3b8;">⚡ Phase 2: Online Ranking — 29 seconds total, CPU only, no network</div>
       <div class="flow">
         <div class="fstep" style="background:#1e293b;border-color:#334155;">
           <div class="fstep-icon">📝</div>
@@ -617,9 +636,9 @@ tr:nth-child(even) td { background: #f8fafc; }
     </div>
 
     <div class="hbox" style="margin-top:8px;">
-      <strong>Reproduce in two commands:</strong> &nbsp;
+      <strong>Two commands to reproduce from scratch:</strong> &nbsp;
       <code style="font-family:monospace;font-size:12px;">python precompute.py --candidates ./candidates.jsonl --out ./artifacts</code>
-      &nbsp;→&nbsp;
+      &nbsp; then &nbsp;
       <code style="font-family:monospace;font-size:12px;">python rank.py --candidates ./candidates.jsonl --out ./submission.csv</code>
     </div>
   </div>
@@ -653,36 +672,36 @@ tr:nth-child(even) td { background: #f8fafc; }
       <div style="display:flex;flex-direction:column;gap:10px;">
         <div class="card" style="border-left:3px solid #4f46e5;">
           <div class="card-head">🗂 precompute.py</div>
-          <div class="card-body">Loads candidates.jsonl → <strong>features.py</strong> extracts title classification, skill hits with proficiency/duration/endorsement weights, ai_role_months, consulting_only, has_product_experience, avg_tenure, education tier, all 23 redrob_signals, full_text for embedding → <strong>honeypot.py</strong> flags 65 impossible profiles → <strong>all-MiniLM-L6-v2</strong> embeds full_text (batch 256, L2-normalised) → saves features.jsonl + embeddings.npy</div>
+          <div class="card-body">Reads candidates.jsonl into <strong>features.py</strong>, which pulls out title classification, skill hits with proficiency and duration weights, months in AI roles, whether the person is consulting-only, product experience, average tenure, education tier, and all 23 platform signals. Then <strong>honeypot.py</strong> flags 65 impossible profiles. Finally <strong>all-MiniLM-L6-v2</strong> embeds the profile text in batches of 256 and saves features.jsonl and embeddings.npy to disk.</div>
         </div>
         <div class="card" style="border-left:3px solid #0891b2;">
           <div class="card-head">🎯 rank.py</div>
-          <div class="card-body">Loads artifacts (3.7s) → embeds JD from local model cache (10.2s) → dot product similarity all 100K (0.04s) → <strong>scorer.py</strong> computes 5-component weighted score per candidate, skipping honeypots (1.7s) → sort descending, pick top 100 → <strong>reasoning.py</strong> generates fact-grounded string per candidate → writes submission.csv</div>
+          <div class="card-body">Loads the saved artifacts in 3.7 seconds, embeds the JD from the local model cache in 10.2 seconds, then runs the dot product across all 100K in 0.04 seconds. <strong>scorer.py</strong> computes the 5-component weighted score for every non-flagged candidate in 1.7 seconds. The top 100 are sorted, <strong>reasoning.py</strong> writes a fact-grounded note for each one, and submission.csv is saved.</div>
         </div>
         <div class="card" style="border-left:3px solid #059669;">
           <div class="card-head">🖥 demo_app/ (Gradio · HuggingFace Spaces)</div>
-          <div class="card-body">Loads pre-screened top-1000 features + embeddings (4 MB). User pastes any JD → embed → dot product → score → ranked table with adjustable weight sliders. Runs in ~15s, CPU Basic (free tier).</div>
+          <div class="card-body">Loads the top 1000 pre-screened features and embeddings, about 4 MB total. You paste any JD, hit rank, and get results in roughly 15 seconds with adjustable weight sliders. Runs on the free CPU Basic tier with no proprietary APIs.</div>
         </div>
       </div>
       <div style="display:flex;flex-direction:column;gap:10px;">
         <div class="card" style="border-left:3px solid #7c3aed;">
-          <div class="card-head">⚙️ scorer.py — 5 components</div>
+          <div class="card-head">⚙️ scorer.py: 5 components</div>
           <div class="card-body">
-            <strong>skill_match:</strong> required_hits coverage × avg weight + text_boost + nice_score. Keyword stuffer penalty: 0.40× if non-AI title + &lt;12mo AI history.<br><br>
-            <strong>career_quality:</strong> starts 0.5 → +0.20 AI title, −0.35 non-AI, +0.20 4+ yrs AI, −0.30 consulting_only, +0.12 production keywords, −0.15 title_chaser.<br><br>
-            <strong>availability:</strong> open_to_work(+0.20), recency, response_rate(×0.18), interview_rate(×0.12), notice_days, location, github_score, verified.<br><br>
-            <strong>education:</strong> tier_1=1.0, tier_2=0.75, tier_3=0.45, tier_4=0.20.
+            <strong>skill_match:</strong> JD coverage times average proficiency and duration weight, plus a text boost and nice-to-have score. Keyword stuffers (non-AI title and under 12 months AI history) get 0.40x on this component.<br><br>
+            <strong>career_quality:</strong> Starts at 0.5. Goes up for AI titles (+0.20), 4+ years in AI (+0.20), production experience (+0.12). Goes down for non-AI titles (-0.35), consulting-only backgrounds (-0.30), frequent title switching (-0.15).<br><br>
+            <strong>availability:</strong> Open to work adds 0.20. Response rate (18%), interview rate (12%), notice period, location, GitHub score, and verification status all feed in.<br><br>
+            <strong>education:</strong> Tier 1 (1.0), Tier 2 (0.75), Tier 3 (0.45), Tier 4 (0.20).
           </div>
         </div>
         <div class="card" style="border-left:3px solid #d97706;">
-          <div class="card-head">🍯 honeypot.py — 5 detection rules</div>
+          <div class="card-head">🍯 honeypot.py: 5 detection rules</div>
           <div class="card-body">
-            1. Career date math vs duration_months &gt;12 month gap<br>
-            2. Expert skill listed with 0 months experience<br>
-            3. YoE &gt;5 years beyond sum of all role durations<br>
-            4. Overlapping jobs &gt;180 days<br>
-            5. 5+ expert/advanced skills each used &lt;3 months<br><br>
-            <strong>65 profiles detected and excluded</strong>
+            1. Career date arithmetic is off by more than 12 months<br>
+            2. Expert-level skill listed but zero months of usage<br>
+            3. Total years of experience exceeds sum of role durations by more than 5 years<br>
+            4. Overlapping jobs for more than 180 days<br>
+            5. Five or more expert or advanced skills each with under 3 months used<br><br>
+            <strong>65 profiles were detected and excluded before scoring</strong>
           </div>
         </div>
       </div>
@@ -734,7 +753,7 @@ tr:nth-child(even) td { background: #f8fafc; }
     </table>
 
     <div class="hbox" style="margin-top:4px;">
-      Zero consulting-only profiles in top 100. Zero non-AI titles. All candidates open to work with ≤90d notice. Scores strictly non-increasing (0.9287 → 0.8495). Quick validation: <strong>PASSED</strong>.
+      Zero consulting-only profiles in the top 100. Zero non-AI titles. All 100 candidates are open to work with a notice period of 90 days or less. Scores run from 0.9287 down to 0.8495 without any inversions. Quick validation check: <strong>PASSED</strong>.
     </div>
   </div>
   <div class="footer-bar"></div>
@@ -766,23 +785,23 @@ tr:nth-child(even) td { background: #f8fafc; }
     <div class="three-col" style="flex:1;">
       <div class="card">
         <div class="card-head">🧠 sentence-transformers</div>
-        <div class="card-body"><strong>all-MiniLM-L6-v2</strong> — 22M params, 384-dim. Chosen because it runs on CPU in ~10s for a single JD embedding and produces strong semantic representations for technical English text. No GPU required at inference time.</div>
+        <div class="card-body"><strong>all-MiniLM-L6-v2</strong> is a 22 million parameter model producing 384-dimensional embeddings. We picked it because it runs entirely on CPU, handles a single JD embedding in about 10 seconds, and gives strong semantic representations for technical English text without needing a GPU anywhere in the pipeline.</div>
       </div>
       <div class="card">
         <div class="card-head">⚡ NumPy matrix multiply</div>
-        <div class="card-body">Replaces FAISS entirely at query time. Embeddings are L2-normalised at precompute → dot product = cosine similarity. <strong>(100K×384) @ (384×1) in 0.04s</strong>. Eliminates recall loss from approximate nearest-neighbour pre-filtering.</div>
+        <div class="card-body">We replaced FAISS entirely at query time. Since embeddings are L2-normalised at precompute, a dot product is the same as cosine similarity. <strong>(100K x 384) @ (384x1) finishes in 0.04 seconds.</strong> This approach eliminates the recall loss that comes from approximate nearest-neighbour pre-filtering, which was cutting genuinely good candidates from our results.</div>
       </div>
       <div class="card">
         <div class="card-head">📄 JSONL feature store</div>
-        <div class="card-body">Line-delimited JSON vs Python pickle. 100K feature dicts load in <strong>3.7 seconds</strong> vs 93 minutes for pickle. Human-readable, no serialisation overhead, portable across Python versions.</div>
+        <div class="card-body">We switched from Python pickle to line-delimited JSON for the feature store. Loading 100,000 feature dictionaries from JSONL takes <strong>3.7 seconds</strong>. The same data as a pickle file took 93 minutes. It is also human-readable, has no serialisation overhead, and works across Python versions without compatibility issues.</div>
       </div>
       <div class="card">
         <div class="card-head">🔍 rapidfuzz</div>
-        <div class="card-body">Fuzzy partial-ratio matching for skill name normalisation. Catches variations: "HuggingFace" vs "Hugging Face Transformers", "Open Search" vs "OpenSearch", "sentence transformers" vs "Sentence-BERT". Critical for fair skill scoring.</div>
+        <div class="card-body">We use fuzzy partial-ratio matching to normalise skill names before scoring. Without this, "HuggingFace" and "Hugging Face Transformers" would be treated as two different skills. Same issue with "Open Search" vs "OpenSearch" and dozens of similar variations across 100,000 profiles. Fair skill scoring depends on getting this right.</div>
       </div>
       <div class="card">
         <div class="card-head">🖥 Gradio + HuggingFace Spaces</div>
-        <div class="card-body">Interactive demo — paste any JD, adjust weight sliders, see top candidates ranked in ~15s. Deployed on CPU Basic (free tier). Top-1000 candidate features + embeddings shipped as 4 MB artifacts. No proprietary APIs.</div>
+        <div class="card-body">A live interactive demo where you can paste any JD, adjust the weight sliders to shift what matters most, and see the top candidates in about 15 seconds. Deployed on the free CPU Basic tier. The top 1000 candidate features and embeddings ship as a 4 MB artifact bundle. No proprietary APIs, no API keys needed.</div>
       </div>
       <div class="card">
         <div class="card-head">🐍 Python 3.13 stack</div>
@@ -791,7 +810,7 @@ tr:nth-child(even) td { background: #f8fafc; }
           <span class="pill pill-purple">scikit-learn</span>&nbsp;
           <span class="pill pill-purple">tqdm</span>&nbsp;
           <span class="pill pill-purple">faiss-cpu</span><br><br>
-          No cloud APIs. No LLMs. Fully reproducible with <code style="font-size:11px;background:#f1f5f9;padding:1px 4px;border-radius:3px;">pip install -r requirements.txt</code>
+          No cloud APIs. No LLMs. Fully reproducible with a single <code style="font-size:11px;background:#f1f5f9;padding:1px 4px;border-radius:3px;">pip install -r requirements.txt</code>
         </div>
       </div>
     </div>
@@ -832,10 +851,10 @@ tr:nth-child(even) td { background: #f8fafc; }
           </div>
         </div>
         <div class="card" style="border-left:3px solid #0891b2;">
-          <div class="card-head">🤗 Live Demo — HuggingFace Spaces</div>
+          <div class="card-head">🤗 Live Demo on HuggingFace Spaces</div>
           <div class="card-body" style="font-size:13px;">
             <strong>huggingface.co/spaces/Drishti84/redrob-ranker</strong><br><br>
-            Interactive Gradio app. Paste any JD → ranked candidates in ~15s. Adjustable scoring weights. Shows top-25 table + full reasoning for top 10.
+            Interactive Gradio app. Paste any JD and get ranked candidates in about 15 seconds. Weight sliders let you shift emphasis on the fly. Shows a top-25 table and full reasoning notes for the top 10.
           </div>
         </div>
       </div>
@@ -843,20 +862,20 @@ tr:nth-child(even) td { background: #f8fafc; }
         <div class="card" style="border-left:3px solid #059669;">
           <div class="card-head">📊 submission.csv</div>
           <div class="card-body" style="font-size:13px;">
-            100 ranked candidates · columns: candidate_id, rank, score, reasoning<br><br>
-            Scores: 0.9287 (rank 1) → 0.8495 (rank 100) · non-increasing ✓<br>
-            Quick validation: PASSED ✓ · No honeypots in top 100 ✓
+            100 ranked candidates with columns: candidate_id, rank, score, reasoning<br><br>
+            Scores range from 0.9287 at rank 1 down to 0.8495 at rank 100, strictly non-increasing ✓<br>
+            Quick validation: PASSED ✓ &nbsp; No honeypots in top 100 ✓
           </div>
         </div>
         <div class="card" style="border-left:3px solid #d97706;">
           <div class="card-head">⚙️ Reproduce command</div>
           <div class="card-body">
             <div class="code" style="font-size:11.5px;padding:10px 14px;">
-              <span class="cm"># Step 1 — precompute (once)</span><br>
+              <span class="cm"># Step 1: precompute once</span><br>
               python precompute.py \<br>
               &nbsp;&nbsp;--candidates ./candidates.jsonl \<br>
               &nbsp;&nbsp;--out ./artifacts<br><br>
-              <span class="cm"># Step 2 — rank (29 seconds)</span><br>
+              <span class="cm"># Step 2: rank all 100K in 29 seconds</span><br>
               python rank.py \<br>
               &nbsp;&nbsp;--candidates ./candidates.jsonl \<br>
               &nbsp;&nbsp;--out ./submission.csv
